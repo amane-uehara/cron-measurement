@@ -1,5 +1,6 @@
 import psutil
 import json
+import socket
 
 resource = {};
 
@@ -48,6 +49,11 @@ resource["network"]["errin"]        = network.errin
 resource["network"]["errout"]       = network.errout
 resource["network"]["dropin"]       = network.dropin
 resource["network"]["dropout"]      = network.dropout
+
+connect_interface = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+connect_interface.connect(("8.8.8.8", 80))
+resource["network"]["ip_addr"] = connect_interface.getsockname()[0]
+connect_interface.close()
 
 resource["uptime"] = {}
 resource["uptime"]["boot_time"] = psutil.boot_time()
