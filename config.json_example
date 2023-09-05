@@ -1,9 +1,10 @@
 {
   "constant":{
-    "saveroot":"/home/your/gz"
+    "hostname": "hostname.is.necessary",
+    "saveroot":"/home/saveroot/is/not/necessary"
   },
   "system_resource": {
-    "save_raw_path"   : "{saveroot}/raw/{title}/json/{yyyymmdd}",
-    "save_daily_path" : "{saveroot}/daily/{title}/json/{yyyymmdd}"
+    "save_raw_file"   : "{saveroot}/raw/{title}/{hostname}/json/{yyyymmdd}/{yyyymmddhhmmss}.json",
+    "save_daily_file" : "{saveroot}/daily/{title}/{hostname}/json/{yyyymmdd}.json.gz"
   }
 }

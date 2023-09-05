@@ -2,10 +2,6 @@ import psutil
 import socket
 import json
 
-import sys
-sys.path.append('../common')
-import fetch_run
-
 def fetch_raw_data():
   resource = {};
 
@@ -73,6 +69,4 @@ def fetch_raw_data():
 
 if __name__ == "__main__":
   data = fetch_raw_data()
-  run  = fetch_run.fetch_run()
-  run["data"] = data
-  print(json.dumps(run))
+  print(json.dumps(data))
