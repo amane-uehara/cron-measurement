@@ -1,0 +1,9 @@
+{
+  "constant":{
+    "saveroot":"/home/your/gz"
+  },
+  "system_resource": {
+    "save_raw_path"   : "{saveroot}/raw/{title}/json/{yyyymmdd}",
+    "save_daily_path" : "{saveroot}/daily/{title}/json/{yyyymmdd}"
+  }
+}
