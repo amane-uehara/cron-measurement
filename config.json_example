@@ -17,4 +17,9 @@
     "bt_retry_count"  : 100,
     "bt_dev_id"       : 0
   },
+  "inkbird_env_sensor": {
+    "save_raw_file"   : "{saveroot}/raw/inkbird_env_sensor/{hostname}/json/{yyyymmdd}/{yyyymmddhhmmss}.json",
+    "sensor_mac_addr" : "49:23:02:00:00:00",
+    "bt_retry_count"  : 100
+  }
 }
