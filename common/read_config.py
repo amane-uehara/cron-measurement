@@ -35,6 +35,7 @@ def apply_template(raw_config, yyyymmddhhmmss):
     for title, target in config.items():
       if title == "constant" : continue
       for kt, vt in target.items():
+        if not type(vt) is str: continue
         target[kt] = vt.replace("{" + str(kc) + "}", vc)
 
   return config

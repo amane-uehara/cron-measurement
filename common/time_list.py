@@ -11,5 +11,4 @@ def time_list(start_yyyymmdd, end_yyyymmdd, increment_second):
     ret.append(current_time.strftime("%Y%m%d%H%M%S"))
     current_time += increment
 
-  print(ret)
   return ret

@@ -9,5 +9,6 @@
   "system_resource_daily": {
     "load_json_files"   : "{saveroot}/raw/system_resource/{hostname}/json/{yyyymmdd}/{yyyymmdd}[0-9][0-9][0-9][0-9][0-9][0-9].json",
     "save_json_gz_file" : "{saveroot}/daily/sytem_resource/{hostname}/json/{yyyymmdd}.json.gz"
+    "span_second"       : 86400
   }
 }

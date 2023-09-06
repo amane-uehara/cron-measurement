@@ -13,13 +13,16 @@ from time_list import time_list
 def main(argv):
   title = argv[1]
   raw_config = read_config.read_raw_config(argv)
+  start_time  = argv[2]
+  end_time    = argv[3]
+  span_second = raw_config[title]["span_second"]
 
-  for yyyymmddhhmmss in time_list(argv[2], argv[3], argv[4]):
-    print(yyyymmddhhmmss)
+  for yyyymmddhhmmss in time_list(start_time, end_time, span_second):
+    print("yyyymmddhhmmss:" + yyyymmddhhmmss, file=sys.stderr)
     config = read_config.apply_template(raw_config, yyyymmddhhmmss)
 
-    load_file_list = glob(config[title]["load_json_files"])
-    print(list(load_file_list))
+    load_file_list = sorted(glob(config[title]["load_json_files"]))
+    print("src filelist:" + str(list(load_file_list)), file=sys.stderr)
     if not load_file_list: continue
 
     save_file = config[title]["save_json_gz_file"]
@@ -30,7 +33,7 @@ def main(argv):
     for load_file in load_file_list:
       with open(load_file, 'r') as f:
         join_data.append(json.load(f))
-    print(list(join_data))
+    print(list(join_data), file=sys.stderr)
 
     with gzip.open(save_file, mode='wt') as f:
       f.write(json.dumps(join_data))
@@ -38,4 +41,4 @@ def main(argv):
 
 if __name__ == "__main__":
   main(sys.argv)
-  # python3 save_raw_data.py "system_resource_daily" 20230905000000 20230906000000 86400 [--config=/path/to/config.json]
+  # python3 save_raw_data.py "system_resource_daily" 20230905000000 20230906000000 [--config=/path/to/config.json]

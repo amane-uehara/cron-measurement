@@ -11,7 +11,6 @@ def fetch_run():
   return ret
 
 if __name__ == "__main__":
-  print(sys.argv)
   data = fetch_raw_system_resource.fetch_data()
   run  = fetch_run()
   run["data"] = data
