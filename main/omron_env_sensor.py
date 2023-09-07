@@ -5,7 +5,7 @@ import sys
 import json
 from math import exp, log
 
-def fetch_raw_data(mac_addr, bt_retry_count, bt_dev_id):
+def fetch_json(mac_addr, bt_retry_count, bt_dev_id):
   mac_addr_lower = mac_addr.lower().replace(':','')
   sock = bluez.hci_open_dev(bt_dev_id)
 
@@ -44,5 +44,5 @@ def fetch_raw_data(mac_addr, bt_retry_count, bt_dev_id):
   return data
 
 if __name__ == "__main__":
-  data = fetch_raw_data(sys.argv[1], 100, 0)
+  data = fetch_json(sys.argv[1], 100, 0)
   print(json.dumps(data))

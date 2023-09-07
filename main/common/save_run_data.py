@@ -1,7 +1,7 @@
 import os
 import json
-from read_config import apply_template
-from fetch_run import fetch_run
+from common.read_config import apply_template
+from common.fetch_run import fetch_run
 
 def save_run_data(data, title, raw_config):
   run  = fetch_run()

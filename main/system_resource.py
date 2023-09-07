@@ -2,7 +2,7 @@ import psutil
 import socket
 import json
 
-def fetch_raw_data():
+def fetch_json():
   resource = {};
 
   resource["cpu"] = {}
@@ -68,5 +68,5 @@ def fetch_raw_data():
   return resource
 
 if __name__ == "__main__":
-  data = fetch_raw_data()
+  data = fetch_json()
   print(json.dumps(data))
