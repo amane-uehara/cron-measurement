@@ -6,7 +6,7 @@ import json
 from math import exp, log
 
 def fetch_json(config):
-  mac_addr       = config["sensor_mac_addr"]     # "c8b244000000"
+  mac_addr       = config["sensor_mac_addr"].lower().replace(":","") # "c8b244000000"
   bt_retry_count = int(config["bt_retry_count"]) # 100
   bt_dev_id      = int(config["bt_dev_id"])      # 0
 
@@ -60,7 +60,7 @@ def key_list():
 
 if __name__ == "__main__":
   data = fetch_json({
-    "mac_addr": "c8b244000000",
+    "sensor_mac_addr": "c8b244000000",
     "bt_retry_count": 100,
     "bt_dev_id": 0
   })

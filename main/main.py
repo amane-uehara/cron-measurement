@@ -18,13 +18,33 @@ def main(argv):
 
   if program == "fetch_omron_env_sensor":
     import omron_env_sensor
+    print(config, file=sys.stderr)
     data = omron_env_sensor.fetch_json(config)
+    print(data, file=sys.stderr)
     save_run_data(data, config)
 
   if program == "fetch_inkbird_env_sensor":
     import inkbird_env_sensor
     data = inkbird_env_sensor.fetch_json(config)
     save_run_data(data, config)
+
+  if program == "csv_system_resource":
+    import system_resource
+    default_data_key_list = system_resource.key_list()
+    yyyymmddhhmmss = argv[2]
+    apply_time = apply_time_template(config, yyyymmddhhmmss)
+    value_list_list = fetch_list_list(apply_time, default_data_key_list)
+    csv_text = "\n".join([",".join(map(str, x)) for x in value_list_list])
+    save_file(csv_text, apply_time)
+
+  if program == "csv_omron_env_sensor":
+    import omron_env_sensor
+    default_data_key_list = omron_env_sensor.key_list()
+    yyyymmddhhmmss = argv[2]
+    apply_time = apply_time_template(config, yyyymmddhhmmss)
+    value_list_list = fetch_list_list(apply_time, default_data_key_list)
+    csv_text = "\n".join([",".join(map(str, x)) for x in value_list_list])
+    save_file(csv_text, apply_time)
 
   if program == "csv_inkbird_env_sensor":
     import inkbird_env_sensor

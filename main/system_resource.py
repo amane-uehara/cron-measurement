@@ -67,7 +67,7 @@ def fetch_json():
 
   return resource
 
-def key_list()
+def key_list():
   return [
     "cpu.core_logical",
     "cpu.core_physical",
