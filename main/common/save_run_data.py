@@ -1,8 +1,8 @@
-import os
 import json
 from datetime import datetime
 from uuid import getnode as get_mac
 from common.read_config import apply_time_template
+from common.save_file import save_file
 
 def save_run_data(data, config):
   run = {}
@@ -14,9 +14,4 @@ def save_run_data(data, config):
   run["data"] = data
 
   apply_time = apply_time_template(config, run["dt"])
-  filename = apply_time["save_file"]
-  filepath = os.path.dirname(filename)
-  os.makedirs(filepath, mode=0o777, exist_ok=True)
-
-  with open(filename, 'w') as f:
-    f.write(json.dumps(run))
+  save_file(json.dumps(run), apply_time)

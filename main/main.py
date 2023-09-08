@@ -1,9 +1,9 @@
 import sys
 import json
-import gzip
 from common.read_config import read_config, apply_time_template
 from common.save_run_data import save_run_data
 from common.fetch_filelist import fetch_filelist
+from common.save_file import save_file
 
 def main(argv):
   title = argv[1]
@@ -30,19 +30,12 @@ def main(argv):
     data = inkbird_env_sensor.fetch_json(mac_addr, bt_retry_count)
     save_run_data(data, config)
 
-  if program == "json_to_list":
+  if program == "json_to_json_list":
+    import json_to_json_list
     yyyymmddhhmmss = argv[2]
-    config = apply_time_template(config, yyyymmddhhmmss)
-    print(config["load_json_files"])
-    load_json_files = fetch_filelist(config["load_json_files"])
-    print(load_json_files)
-    save_file = config["save_file"]
-    join_list = []
-    for json_file in load_json_files:
-      with open(json_file, 'r') as f:
-        join_list.append(json.load(f))
-    with gzip.open(save_file, mode='wt') as f:
-      f.write(json.dumps(join_list))
+    apply_time = apply_time_template(config, yyyymmddhhmmss)
+    data_list = json_to_json_list.fetch_json_list(apply_time)
+    save_file(json.dumps(data_list), apply_time)
 
 if __name__ == "__main__":
   main(sys.argv)
