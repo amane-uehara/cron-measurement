@@ -7,7 +7,7 @@ def fetch_json(config):
   mac_addr       = config["sensor_mac_addr"]      # "492302f00000"
   bt_retry_count = int(config["bt_retry_count"])  # 100
 
-  mac_short = mac_addr.replace(':','')
+  mac_short = mac_addr.lower().replace(':','')
   mac_colon = ":".join([mac_short[i:i+2] for i in range(0, len(mac_short), 2)])
   data = {}
 
