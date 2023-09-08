@@ -30,6 +30,10 @@ def read_config(argv):
   for kc, vc in config.items():
     constant[kc] = vc
 
+  for key in ["mac_addr", "sensor_mac_addr"]:
+    if key in constant:
+      constant[key] = constant[key].lower().replace(":","")
+
   return constant
 
 def apply_time_template(config, yyyymmddhhmmss):
