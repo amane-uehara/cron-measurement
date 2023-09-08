@@ -4,25 +4,24 @@
     "saveroot": "/home/saveroot/is/not/necessary"
   },
   "system_resource": {
-    "program"         : "fetch_system_resource",
-    "save_raw_file"   : "{saveroot}/raw/system_resource/{hostname}/json/{yyyymmdd}/{yyyymmddhhmmss}.json"
+    "program"   : "fetch_system_resource",
+    "save_file" : "{saveroot}/raw/system_resource/{hostname}/json/{yyyymmdd}/{yyyymmddhhmmss}.json"
   },
   "system_resource_daily": {
     "program"         : "json_to_list",
-    "load_json_files"   : "{saveroot}/raw/system_resource/{hostname}/json/{yyyymmdd}/{yyyymmdd}[0-9][0-9][0-9][0-9][0-9][0-9].json",
-    "save_json_gz_file" : "{saveroot}/daily/sytem_resource/{hostname}/json/{yyyymmdd}.json.gz",
-    "span_second"       : 86400
+    "save_file"       : "{saveroot}/daily/sytem_resource/{hostname}/json/{yyyymmdd}.json.gz",
+    "load_file_list"  : "{saveroot}/raw/system_resource/{hostname}/json/{yyyymmdd}/{yyyymmdd}[0-9][0-9][0-9][0-9][0-9][0-9].json"
   },
   "omron_env_sensor": {
     "program"         : "fetch_omron_env_sensor",
-    "save_raw_file"   : "{saveroot}/raw/omron_env_sensor/{hostname}/json/{yyyymmdd}/{yyyymmddhhmmss}.json",
+    "save_file"       : "{saveroot}/raw/omron_env_sensor/{hostname}/json/{yyyymmdd}/{yyyymmddhhmmss}.json",
     "sensor_mac_addr" : "C8:B2:44:32:FC:06",
     "bt_retry_count"  : 100,
     "bt_dev_id"       : 0
   },
   "inkbird_env_sensor": {
     "program"         : "fetch_inkbird_env_sensor",
-    "save_raw_file"   : "{saveroot}/raw/inkbird_env_sensor/{hostname}/json/{yyyymmdd}/{yyyymmddhhmmss}.json",
+    "save_file"       : "{saveroot}/raw/inkbird_env_sensor/{hostname}/json/{yyyymmdd}/{yyyymmddhhmmss}.json",
     "sensor_mac_addr" : "49:23:02:00:00:00",
     "bt_retry_count"  : 100
   }
