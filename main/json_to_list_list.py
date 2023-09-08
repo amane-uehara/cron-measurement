@@ -7,7 +7,7 @@ def fetch_list_list(config, default_data_key_list):
   if "run_key_list"  in config: run_key_list  = config["run_key_list"]
   else:                         run_key_list  = default_run_key_list()
   if "data_key_list" in config: data_key_list = config["data_key_list"]
-  else:                         data_key_list = default_data_key_list()
+  else:                         data_key_list = default_data_key_list
   key_list = run_key_list + list(map(lambda x: "data." + x, data_key_list))
   print("csv_key: " + str(key_list), file=sys.stderr)
 
