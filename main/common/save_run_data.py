@@ -9,8 +9,12 @@ def save_run_data(data, config):
   run['dt']  = datetime.now().strftime("%Y%m%d%H%M%S")
   run["hostname"] = config["hostname"]
   run['mac_addr'] = hex(get_mac())[2:]
+
   if "sensor_mac_addr" in config:
     run['sensor_mac_addr'] = config["sensor_mac_addr"].lower().replace(':','')
+  if "sensor_location" in config:
+    run['sensor_location'] = config["sensor_location"]
+
   run["data"] = data
 
   apply_time = apply_time_template(config, run["dt"])
