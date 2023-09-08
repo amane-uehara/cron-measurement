@@ -7,7 +7,7 @@
     "program"   : "fetch_system_resource",
     "save_file" : "{saveroot}/raw/system_resource/{hostname}/json/{yyyymmdd}/{yyyymmddhhmmss}.json"
   },
-  "system_resource_daily": {
+  "system_resource_daily_json": {
     "program"         : "json_to_json_list",
     "save_file"       : "{saveroot}/daily/sytem_resource/{hostname}/json/{yyyymmdd}.json.gz",
     "load_file_list"  : [
@@ -26,10 +26,24 @@
     "program"         : "fetch_inkbird_env_sensor",
     "save_file"       : "{saveroot}/raw/inkbird_env_sensor/{hostname}/json/{yyyymmdd}/{yyyymmddhhmmss}.json",
     "sensor_mac_addr" : "49:23:02:F0:00:00",
-    "sensor_location" : "there",
+    "sensor_location" : "here",
     "bt_retry_count"  : 100
   },
-  "inkbird_env_sensor_daily": {
+  "system_resource_daily_csv": {
+    "program"         : "csv_system_resource",
+    "save_file"       : "{saveroot}/daily/system_resource/{hostname}/csv/{yyyymmdd}.csv.gz",
+    "load_file_list"  : [
+      "{saveroot}/raw/system_resource/{hostname}/json/{yyyymmdd}/{yyyymmdd}[0-9][0-9][0-9][0-9][0-9][0-9].json"
+    ]
+  },
+  "omron_env_sensor_daily_csv": {
+    "program"         : "csv_omron_env_sensor",
+    "save_file"       : "{saveroot}/daily/omron_env_sensor/{hostname}/csv/{yyyymmdd}.csv.gz",
+    "load_file_list"  : [
+      "{saveroot}/raw/omron_env_sensor/{hostname}/json/{yyyymmdd}/{yyyymmdd}[0-9][0-9][0-9][0-9][0-9][0-9].json"
+    ]
+  },
+  "inkbird_env_sensor_daily_csv": {
     "program"         : "csv_inkbird_env_sensor",
     "save_file"       : "{saveroot}/daily/inkbird_env_sensor/{hostname}/csv/{yyyymmdd}.csv.gz",
     "run_key_list"    : ["dt", "mac_addr"],
