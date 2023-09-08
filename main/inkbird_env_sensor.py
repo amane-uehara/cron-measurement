@@ -29,6 +29,12 @@ def fetch_json(config):
       break
   return data
 
+def key_list():
+  return [
+    "temperature",
+    "humidity"
+  ]
+
 if __name__ == "__main__":
   data = fetch_json({
     "mac_addr": "492302f00000",

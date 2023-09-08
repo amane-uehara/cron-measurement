@@ -28,5 +28,14 @@
     "sensor_mac_addr" : "49:23:02:F0:00:00",
     "sensor_location" : "there",
     "bt_retry_count"  : 100
+  },
+  "inkbird_env_sensor_daily": {
+    "program"         : "csv_inkbird_env_sensor",
+    "save_file"       : "{saveroot}/daily/inkbird_env_sensor/{hostname}/csv/{yyyymmdd}.csv.gz",
+    "run_key_list"    : ["dt", "mac_addr"],
+    "data_key_list"   : ["temperature"],
+    "load_file_list"  : [
+      "{saveroot}/raw/inkbird_env_sensor/{hostname}/json/{yyyymmdd}/{yyyymmdd}[0-9][0-9][0-9][0-9][0-9][0-9].json"
+    ]
   }
 }

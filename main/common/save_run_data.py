@@ -19,3 +19,12 @@ def save_run_data(data, config):
 
   apply_time = apply_time_template(config, run["dt"])
   save_file(json.dumps(run), apply_time)
+
+def default_run_key_list():
+  return [
+    "dt",
+    "hostname",
+    "mac_addr",
+    "sensor_mac_addr",
+    "sensor_location"
+  ]
