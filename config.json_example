@@ -17,14 +17,14 @@
   "omron_env_sensor": {
     "program"         : "fetch_omron_env_sensor",
     "save_file"       : "{saveroot}/raw/omron_env_sensor/{hostname}/json/{yyyymmdd}/{yyyymmddhhmmss}.json",
-    "sensor_mac_addr" : "C8:B2:44:32:FC:06",
+    "sensor_mac_addr" : "C8:B2:44:00:00:00",
     "bt_retry_count"  : 100,
     "bt_dev_id"       : 0
   },
   "inkbird_env_sensor": {
     "program"         : "fetch_inkbird_env_sensor",
     "save_file"       : "{saveroot}/raw/inkbird_env_sensor/{hostname}/json/{yyyymmdd}/{yyyymmddhhmmss}.json",
-    "sensor_mac_addr" : "49:23:02:00:00:00",
+    "sensor_mac_addr" : "49:23:02:F0:00:00",
     "bt_retry_count"  : 100
   }
 }

@@ -36,11 +36,11 @@ $ sudo su root
 
 ```sh
 $ sudo su root
-# python3 fetch_raw_data.py "C8:B2:44:32:FC:06"
+# python3 fetch_raw_data.py "C8:B2:44:00:00:00"
 {"temperature": 2765, "relative_humidity": 6909, "ambient_light": 78, "barometric_pressure": 1007316, "sound_noise": 5319, "etvoc": 29, "eco2": 594, "absolute_humidity":1728}
 ```
 
-Command line argument `C8:B2:44:32:FC:06` is omron sensor's mac address.
+Command line argument `C8:B2:44:00:00:00` is omron sensor's mac address.
 
 ### Data
 
@@ -78,8 +78,8 @@ $ sudo su root
 
 ```sh
 $ sudo su root
-# python3 fetch_raw_data.py "49:23:02:00:00:00"
+# python3 fetch_raw_data.py "49:23:02:F0:00:00"
 {"temperature": 2930, "relative_humidity": 6404}
 ```
 
-Command line argument `49:23:02:00:00:00` is inkbird sensor's mac address.
+Command line argument `49:23:02:F0:00:00` is inkbird sensor's mac address.
