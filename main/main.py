@@ -4,7 +4,7 @@ from common.read_config import read_config, apply_time_template
 from common.save_run_data import save_run_data
 from common.fetch_filelist import fetch_filelist
 from common.save_file import save_file
-from json_to_list_list import fetch_list_list
+from common.json_to_list_list import fetch_list_list
 
 def main(argv):
   title = argv[1]
@@ -18,9 +18,7 @@ def main(argv):
 
   if program == "fetch_omron_env_sensor":
     import omron_env_sensor
-    print(config, file=sys.stderr)
     data = omron_env_sensor.fetch_json(config)
-    print(data, file=sys.stderr)
     save_run_data(data, config)
 
   if program == "fetch_inkbird_env_sensor":

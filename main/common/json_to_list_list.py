@@ -1,6 +1,6 @@
 import json
 import sys
-from json_to_json_list import fetch_json_list
+from common.json_to_json_list import fetch_json_list
 from common.save_run_data import default_run_key_list
 
 def fetch_list_list(config, default_data_key_list):
