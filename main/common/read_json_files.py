@@ -7,7 +7,7 @@ def fetch_json_list(config):
 
   join_list = []
   for json_file in load_file_list:
-    with open(json_file, 'r') as f:
+    with open(json_file, "r") as f:
       json_data = json.load(f)
       if isinstance(json_data, dict):
         join_list.append(json_data)

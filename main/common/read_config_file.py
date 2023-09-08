@@ -4,7 +4,7 @@ from datetime import datetime, timedelta
 from pathlib import Path
 
 def read_config_file(argv):
-  config_filename = str(Path(__file__).resolve().parent.parent.parent.joinpath('config.json'))
+  config_filename = str(Path(__file__).resolve().parent.parent.parent.joinpath("config.json"))
   for v in argv:
     if "--config=" in v:
       config_filename = v.split("=",1)[1]

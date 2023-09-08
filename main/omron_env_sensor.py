@@ -26,8 +26,8 @@ def fetch_json(config):
   data = {}
   for _ in range(bt_retry_count):
     pkt = sock.recv(255)
-    if (b'\xd5\x02' not in pkt): continue
-    if (b'Rbt' not in pkt): continue
+    if (b"\xd5\x02" not in pkt): continue
+    if (b"Rbt" not in pkt): continue
     if (mac_addr != binascii.hexlify((pkt[7:13])[::-1]).decode()): continue
 
     ( data["temperature"],
@@ -37,11 +37,11 @@ def fetch_json(config):
       data["sound_noise"],
       data["etvoc"],
       data["eco2"]
-    ) = struct.unpack('<hhhlhhh',pkt[23:39])
+    ) = struct.unpack("<hhhlhhh",pkt[23:39])
 
-    t = data['temperature']
-    r = data['relative_humidity']
-    data['absolute_humidity'] = round(217*6.1078*exp(7.5*(t/100.0)*log(10.0)/((t/100.0)+237.3))/((t/100.0)+273.15)*((r/100.0)/100.0)*100)
+    t = data["temperature"]
+    r = data["relative_humidity"]
+    data["absolute_humidity"] = round(217*6.1078*exp(7.5*(t/100.0)*log(10.0)/((t/100.0)+237.3))/((t/100.0)+273.15)*((r/100.0)/100.0)*100)
 
     break
   return data

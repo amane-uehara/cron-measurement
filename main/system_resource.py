@@ -33,7 +33,7 @@ def fetch_json():
   resource["swap"]["free"]    = swap.free
   resource["swap"]["percent"] = swap.percent
 
-  disk = psutil.disk_usage('/')
+  disk = psutil.disk_usage("/")
   resource["disk"] = {}
   resource["disk"]["total"]   = disk.total
   resource["disk"]["used"]    = disk.used
