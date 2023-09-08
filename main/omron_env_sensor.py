@@ -5,8 +5,11 @@ import sys
 import json
 from math import exp, log
 
-def fetch_json(mac_addr, bt_retry_count, bt_dev_id):
-  mac_addr_lower = mac_addr.lower().replace(':','')
+def fetch_json(config):
+  mac_addr       = config["sensor_mac_addr"]     # "c8b244000000"
+  bt_retry_count = int(config["bt_retry_count"]) # 100
+  bt_dev_id      = int(config["bt_dev_id"])      # 0
+
   sock = bluez.hci_open_dev(bt_dev_id)
 
   cmd_pkt = struct.pack("<BBBBBBB", 0x01, 0x0, 0x10, 0x0, 0x10, 0x01, 0x00)
@@ -25,7 +28,7 @@ def fetch_json(mac_addr, bt_retry_count, bt_dev_id):
     pkt = sock.recv(255)
     if (b'\xd5\x02' not in pkt): continue
     if (b'Rbt' not in pkt): continue
-    if (mac_addr_lower != binascii.hexlify((pkt[7:13])[::-1]).decode()): continue
+    if (mac_addr != binascii.hexlify((pkt[7:13])[::-1]).decode()): continue
 
     ( data["temperature"],
       data["relative_humidity"],
@@ -44,5 +47,9 @@ def fetch_json(mac_addr, bt_retry_count, bt_dev_id):
   return data
 
 if __name__ == "__main__":
-  data = fetch_json(sys.argv[1], 100, 0)
+  data = fetch_json({
+    "mac_addr": "c8b244000000",
+    "bt_retry_count": 100,
+    "bt_dev_id": 0
+  })
   print(json.dumps(data))

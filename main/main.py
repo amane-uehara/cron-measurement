@@ -17,17 +17,12 @@ def main(argv):
 
   if program == "fetch_omron_env_sensor":
     import omron_env_sensor
-    mac_addr       = config["sensor_mac_addr"].lower().replace(':','')
-    bt_retry_count = config["bt_retry_count"]
-    bt_dev_id      = config["bt_dev_id"]
-    data = omron_env_sensor.fetch_json(mac_addr, bt_retry_count, bt_dev_id)
+    data = omron_env_sensor.fetch_json(config)
     save_run_data(data, config)
 
   if program == "fetch_inkbird_env_sensor":
     import inkbird_env_sensor
-    mac_addr       = config["sensor_mac_addr"].lower().replace(':','')
-    bt_retry_count = config["bt_retry_count"]
-    data = inkbird_env_sensor.fetch_json(mac_addr, bt_retry_count)
+    data = inkbird_env_sensor.fetch_json(config)
     save_run_data(data, config)
 
   if program == "json_to_json_list":

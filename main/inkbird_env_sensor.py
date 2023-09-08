@@ -3,7 +3,10 @@ import struct
 import sys
 import json
 
-def fetch_json(mac_addr, bt_retry_count):
+def fetch_json(config):
+  mac_addr       = config["sensor_mac_addr"]      # "492302f00000"
+  bt_retry_count = int(config["bt_retry_count"])  # 100
+
   mac_short = mac_addr.replace(':','')
   mac_colon = ":".join([mac_short[i:i+2] for i in range(0, len(mac_short), 2)])
   data = {}
@@ -27,5 +30,8 @@ def fetch_json(mac_addr, bt_retry_count):
   return data
 
 if __name__ == "__main__":
-  data = fetch_json(sys.argv[1], 100)
+  data = fetch_json({
+    "mac_addr": "492302f00000",
+    "bt_retry_count": 100
+  })
   print(json.dumps(data))
