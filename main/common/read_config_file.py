@@ -3,7 +3,7 @@ import sys
 from datetime import datetime, timedelta
 from pathlib import Path
 
-def read_config(argv):
+def read_config_file(argv):
   config_filename = str(Path(__file__).resolve().parent.parent.parent.joinpath('config.json'))
   for v in argv:
     if "--config=" in v:

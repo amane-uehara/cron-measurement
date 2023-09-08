@@ -1,13 +1,13 @@
 import sys
 import json
-from common.read_config import read_config, apply_time_template
+from common.read_config_file import read_config_file, apply_time_template
 from common.fetch_filelist import fetch_filelist
 from common.save_file import save_file, save_run_data
 from common.read_json_files import fetch_list_list
 
 def main(argv):
   title = argv[1]
-  config = read_config(argv)
+  config = read_config_file(argv)
   program = config["program"]
 
   if program == "fetch_system_resource":

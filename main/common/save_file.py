@@ -4,8 +4,8 @@ import gzip
 import json
 
 from datetime import datetime
-from uuid import getnode as get_mac
-from common.read_config import apply_time_template
+from uuid import getnode
+from common.read_config_file import apply_time_template
 
 def save_file(text, config):
   filename = config["save_file"]
@@ -29,7 +29,7 @@ def save_run_data(data, config):
   run = {}
   run['dt']  = datetime.now().strftime("%Y%m%d%H%M%S")
   run["hostname"] = config["hostname"]
-  run['mac_addr'] = hex(get_mac())[2:]
+  run['mac_addr'] = hex(getnode())[2:]
 
   if "sensor_mac_addr" in config:
     run['sensor_mac_addr'] = config["sensor_mac_addr"].lower().replace(':','')
@@ -40,12 +40,3 @@ def save_run_data(data, config):
 
   apply_time = apply_time_template(config, run["dt"])
   save_file(json.dumps(run), apply_time)
-
-def default_run_key_list():
-  return [
-    "dt",
-    "hostname",
-    "mac_addr",
-    "sensor_mac_addr",
-    "sensor_location"
-  ]

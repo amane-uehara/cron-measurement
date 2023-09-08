@@ -1,7 +1,6 @@
 import json
 import sys
 from common.fetch_filelist import fetch_filelist
-from common.save_file import default_run_key_list
 
 def fetch_json_list(config):
   load_file_list = fetch_filelist(config["load_file_list"])
@@ -60,3 +59,12 @@ def key_search(layer_list, data_dict):
     return data_dict[key]
   elif len(layer_list) >= 1:
     return key_search(layer_list, data_dict[key])
+
+def default_run_key_list():
+  return [
+    "dt",
+    "hostname",
+    "mac_addr",
+    "sensor_mac_addr",
+    "sensor_location"
+  ]
