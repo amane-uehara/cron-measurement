@@ -67,6 +67,44 @@ def fetch_json():
 
   return resource
 
+def key_list()
+  return [
+    "cpu.core_logical",
+    "cpu.core_physical",
+    "cpu.freq_current",
+    "cpu.freq_min",
+    "cpu.freq_max",
+    "cpu.loadavg_1",
+    "cpu.loadavg_5",
+    "cpu.loadavg_15",
+    "cpu.percent",
+    "mem.total",
+    "mem.used",
+    "mem.free",
+    "mem.available",
+    "mem.percent",
+    "swap.total",
+    "swap.used",
+    "swap.free",
+    "swap.percent",
+    "disk.total",
+    "disk.used",
+    "disk.free",
+    "disk.percent",
+    "network.bytes_sent",
+    "network.bytes_recv",
+    "network.packets_sent",
+    "network.packets_recv",
+    "network.errin",
+    "network.errout",
+    "network.dropin",
+    "network.dropout",
+    "network.ip_addr",
+    "uptime.boot_time",
+    "uptime.users",
+    "sensor.temperature"
+  ]
+
 if __name__ == "__main__":
   data = fetch_json()
   print(json.dumps(data))

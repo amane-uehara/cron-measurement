@@ -46,6 +46,18 @@ def fetch_json(config):
     break
   return data
 
+def key_list():
+  return [
+    "temperature",
+    "relative_humidity",
+    "absolute_humidity",
+    "ambient_light",
+    "barometric_pressure",
+    "sound_noise",
+    "etvoc",
+    "eco2"
+  ]
+
 if __name__ == "__main__":
   data = fetch_json({
     "mac_addr": "c8b244000000",
