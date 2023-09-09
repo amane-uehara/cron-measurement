@@ -1,5 +1,7 @@
 # cron-measurement
 
+Python requirement (>=3.7)
+
 ## System resource
 
 ### install
