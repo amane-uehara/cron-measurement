@@ -20,5 +20,5 @@ def import_sensor(sensor_name):
     print("INFO: import sensor." + sensor_name, file=sys.stderr)
     module = import_module("sensor." + sensor_name)
     ret["fetch_json"] = module.fetch_json
-    ret["key_list"]   = module.key_list
+    ret["key_list"]   = module.key_list()
   return ret

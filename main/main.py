@@ -7,21 +7,17 @@ from common.import_sensor import import_sensor
 
 def main(argv):
   config  = read_config_file(argv)
-
   sensor = import_sensor(config["sensor"])
-  fetch_json = sensor["fetch_json"]
-  key_list   = sensor["key_list"]
-
   program = config["program"]
 
   if program == "fetch_raw_json":
-    data = fetch_json(config)
+    data = sensor["fetch_json"](config)
     save_run_data(data, config)
 
   if program == "to_csv":
     yyyymmddhhmmss = argv[2]
     apply_time = apply_time_template(config, yyyymmddhhmmss)
-    value_list_list = fetch_list_list(apply_time, key_list())
+    value_list_list = fetch_list_list(apply_time, sensor["key_list"])
     csv_text = "\n".join([",".join(map(str, x)) for x in value_list_list])
     save_file(csv_text, apply_time)
 
