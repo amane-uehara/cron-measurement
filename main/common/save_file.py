@@ -25,7 +25,7 @@ def save_file(text, config):
 
   print(" (" + str(os.path.getsize(filename)) + " byte)", file=sys.stderr)
 
-def save_run_data(data, config):
+def save_raw_data(data, config):
   run = {}
   run["dt"]  = datetime.now().strftime("%Y%m%d%H%M%S")
   run["hostname"] = config["hostname"]
@@ -37,10 +37,13 @@ def save_run_data(data, config):
     run["sensor_location"] = config["sensor_location"]
 
   run["data"] = data
-
   apply_time = apply_time_template(config, run["dt"])
-  save_file(json.dumps(run), apply_time)
+  save_json_file(run, apply_time)
+
+def save_json_file(json_list, config):
+  text = json.dumps(json_list, separators=(',',':'))
+  save_file(text, config)
 
 def save_csv_file(list_list, config):
-  text = str(json.dumps(list_list,separators=(',',':')).replace("],[","\n").lstrip("[[")).rstrip("\n").rstrip("]]")
+  text = str(json.dumps(list_list, separators=(',',':')).replace("],[", "\n").lstrip("[[")).rstrip("\n").rstrip("]]")
   save_file(text, config)

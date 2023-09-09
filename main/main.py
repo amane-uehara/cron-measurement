@@ -9,7 +9,7 @@ def main(argv):
 
   if program == "fetch_raw_json":
     data = sensor["fetch_json"](config)
-    save_run_data(data, config)
+    save_raw_data(data, config)
 
   if program == "to_csv":
     yyyymmddhhmmss = argv[2]
@@ -20,8 +20,8 @@ def main(argv):
   if program == "to_json_list":
     yyyymmddhhmmss = argv[2]
     apply_time = apply_time_template(config, yyyymmddhhmmss)
-    data_list = fetch_json_list(apply_time)
-    save_file(json.dumps(data_list), apply_time)
+    json_list = fetch_json_list(apply_time)
+    save_json_file(json_list, apply_time)
 
 if __name__ == "__main__":
   main(sys.argv)

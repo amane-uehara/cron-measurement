@@ -6,6 +6,6 @@ from common.import_sensor    import import_sensor
 from common.read_json_files  import fetch_json_list
 from common.read_json_files  import fetch_list_list
 
-from common.save_file        import save_file
-from common.save_file        import save_run_data
+from common.save_file        import save_raw_data
+from common.save_file        import save_json_file
 from common.save_file        import save_csv_file
