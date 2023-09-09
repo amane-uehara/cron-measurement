@@ -8,7 +8,7 @@ from uuid import getnode
 from common.read_config_file import apply_time_template
 
 def save_file(text, config):
-  filename = config["save_file"]
+  filename = config["output_file"]
 
   if filename == "${stdout}":
     print(text, file=sys.stdout)

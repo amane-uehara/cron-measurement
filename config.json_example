@@ -1,17 +1,17 @@
 {
   "constant": {
     "hostname": "hostname.is.necessary",
-    "saveroot": "/home/saveroot/is/not/necessary"
+    "output_oot": "/home/output_root/is/not/necessary"
   },
   "system_resource_raw": {
     "sensor"          : "system_resource",
     "program"         : "fetch_raw_json",
-    "save_file"       : "${saveroot}/raw/${sensor}/${hostname}/json/${yyyymmdd}/${yyyymmddhhmmss}.json"
+    "output_file"     : "${output_root}/raw/${sensor}/${hostname}/json/${yyyymmdd}/${yyyymmddhhmmss}.json"
   },
   "omron_env_sensor_raw": {
     "sensor"          : "omron_env_sensor",
     "program"         : "fetch_raw_json",
-    "save_file"       : "${saveroot}/raw/${sensor}/${hostname}/json/${yyyymmdd}/${yyyymmddhhmmss}.json",
+    "output_file"     : "${output_root}/raw/${sensor}/${hostname}/json/${yyyymmdd}/${yyyymmddhhmmss}.json",
     "sensor_mac_addr" : "C8:B2:44:00:00:00",
     "sensor_location" : "here",
     "bt_retry_count"  : 100,
@@ -20,7 +20,7 @@
   "inkbird_env_sensor_raw": {
     "sensor"          : "inkbird_env_sensor",
     "program"         : "fetch_raw_json",
-    "save_file"       : "${saveroot}/raw/${sensor}/${hostname}/json/${yyyymmdd}/${yyyymmddhhmmss}.json",
+    "output_file"     : "${output_root}/raw/${sensor}/${hostname}/json/${yyyymmdd}/${yyyymmddhhmmss}.json",
     "sensor_mac_addr" : "49:23:02:F0:00:00",
     "sensor_location" : "here",
     "bt_retry_count"  : 100
@@ -28,25 +28,25 @@
   "system_resource_json_list": {
     "sensor"          : "system_resource",
     "program"         : "to_json_list",
-    "save_file"       : "${saveroot}/daily/${sensor}/${hostname}/json/${yyyymmdd}.json.gz",
+    "output_file"     : "${output_root}/daily/${sensor}/${hostname}/json/${yyyymmdd}.json.gz",
     "input_file_list" : [
-      "${saveroot}/raw/${sensor}/${hostname}/json/${yyyymmdd}/${yyyymmdd}[0-9][0-9][0-9][0-9][0-9][0-9].json"
+      "${output_root}/raw/${sensor}/${hostname}/json/${yyyymmdd}/${yyyymmdd}[0-9][0-9][0-9][0-9][0-9][0-9].json"
     ]
   },
   "system_resource_csv": {
     "sensor"          : "system_resource",
     "program"         : "to_csv",
-    "save_file"       : "${saveroot}/daily/${sensor}/${hostname}/csv/${yyyymmdd}.csv.gz",
+    "output_file"     : "${output_root}/daily/${sensor}/${hostname}/csv/${yyyymmdd}.csv.gz",
     "input_file_list" : [
-      "${saveroot}/raw/${sensor}/${hostname}/json/${yyyymmdd}/${yyyymmdd}[0-9][0-9][0-9][0-9][0-9][0-9].json"
+      "${output_root}/raw/${sensor}/${hostname}/json/${yyyymmdd}/${yyyymmdd}[0-9][0-9][0-9][0-9][0-9][0-9].json"
     ]
   },
   "omron_env_sensor_csv": {
     "sensor"          : "omron_env_sensor",
     "program"         : "to_csv",
-    "save_file"       : "${saveroot}/daily/${sensor}/${hostname}/csv/${yyyymmdd}.csv.gz",
+    "output_file"     : "${output_root}/daily/${sensor}/${hostname}/csv/${yyyymmdd}.csv.gz",
     "input_file_list" : [
-      "${saveroot}/raw/${sensor}/${hostname}/json/${yyyymmdd}/${yyyymmdd}[0-9][0-9][0-9][0-9][0-9][0-9].json"
+      "${output_root}/raw/${sensor}/${hostname}/json/${yyyymmdd}/${yyyymmdd}[0-9][0-9][0-9][0-9][0-9][0-9].json"
     ]
   },
   "system_resource_old_json": {
@@ -58,9 +58,9 @@
       "data.relative_humidity" : "relative_humidity",
       "data.absolute_humidity" : "absolute_humidity"
     },
-    "save_file"       : "${stdout}",
+    "output_file"     : "${stdout}",
     "input_file_list" : [
-      "${saveroot}/raw/${sensor}/${hostname}/json/${yyyymmdd}/${yyyymmdd}[0-9][0-9][0-9][0-9][0-9][0-9].json"
+      "${output_root}/raw/${sensor}/${hostname}/json/${yyyymmdd}/${yyyymmdd}[0-9][0-9][0-9][0-9][0-9][0-9].json"
     ]
   },
   "omron_env_sensor_old_json": {
@@ -77,9 +77,9 @@
       "data.eco2"                : "eco2",
       "data.absolute_humidity"   : "absolute_humidity"
     },
-    "save_file"       : "${saveroot}/daily/${sensor}/${hostname}/json_select/${yyyymmdd}.json.gz",
+    "output_file"     : "${output_root}/daily/${sensor}/${hostname}/json_select/${yyyymmdd}.json.gz",
     "input_file_list" : [
-      "${saveroot}/raw/${sensor}/${hostname}/json/${yyyymmdd}/${yyyymmdd}[0-9][0-9][0-9][0-9][0-9][0-9].json"
+      "${output_root}/raw/${sensor}/${hostname}/json/${yyyymmdd}/${yyyymmdd}[0-9][0-9][0-9][0-9][0-9][0-9].json"
     ]
   },
   "inkbird_env_sensor_old_json": {
@@ -91,9 +91,9 @@
       "data.relative_humidity" : "relative_humidity",
       "data.absolute_humidity" : "absolute_humidity"
     },
-    "save_file"       : "${saveroot}/daily/${sensor}/${hostname}/json_select/${yyyymmdd}.json.gz",
+    "output_file"     : "${output_root}/daily/${sensor}/${hostname}/json_select/${yyyymmdd}.json.gz",
     "input_file_list" : [
-      "${saveroot}/raw/${sensor}/${hostname}/json/${yyyymmdd}/${yyyymmdd}[0-9][0-9][0-9][0-9][0-9][0-9].json"
+      "${output_root}/raw/${sensor}/${hostname}/json/${yyyymmdd}/${yyyymmdd}[0-9][0-9][0-9][0-9][0-9][0-9].json"
     ]
   }
 }
