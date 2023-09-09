@@ -29,7 +29,7 @@
     "sensor"          : "system_resource",
     "program"         : "to_json_list",
     "save_file"       : "${saveroot}/daily/${sensor}/${hostname}/json/${yyyymmdd}.json.gz",
-    "load_file_list"  : [
+    "input_file_list" : [
       "${saveroot}/raw/${sensor}/${hostname}/json/${yyyymmdd}/${yyyymmdd}[0-9][0-9][0-9][0-9][0-9][0-9].json"
     ]
   },
@@ -37,7 +37,7 @@
     "sensor"          : "system_resource",
     "program"         : "to_csv",
     "save_file"       : "${saveroot}/daily/${sensor}/${hostname}/csv/${yyyymmdd}.csv.gz",
-    "load_file_list"  : [
+    "input_file_list" : [
       "${saveroot}/raw/${sensor}/${hostname}/json/${yyyymmdd}/${yyyymmdd}[0-9][0-9][0-9][0-9][0-9][0-9].json"
     ]
   },
@@ -45,7 +45,21 @@
     "sensor"          : "omron_env_sensor",
     "program"         : "to_csv",
     "save_file"       : "${saveroot}/daily/${sensor}/${hostname}/csv/${yyyymmdd}.csv.gz",
-    "load_file_list"  : [
+    "input_file_list" : [
+      "${saveroot}/raw/${sensor}/${hostname}/json/${yyyymmdd}/${yyyymmdd}[0-9][0-9][0-9][0-9][0-9][0-9].json"
+    ]
+  },
+  "system_resource_old_json": {
+    "sensor"          : "system_resource",
+    "program"         : "to_selected_json_list",
+    "key_dict"        : {
+      "dt"                     : "dt",
+      "data.temperature"       : "temperature",
+      "data.relative_humidity" : "relative_humidity",
+      "data.absolute_humidity" : "absolute_humidity"
+    },
+    "save_file"       : "${stdout}",
+    "input_file_list" : [
       "${saveroot}/raw/${sensor}/${hostname}/json/${yyyymmdd}/${yyyymmdd}[0-9][0-9][0-9][0-9][0-9][0-9].json"
     ]
   },
@@ -64,7 +78,7 @@
       "data.absolute_humidity"   : "absolute_humidity"
     },
     "save_file"       : "${saveroot}/daily/${sensor}/${hostname}/json_select/${yyyymmdd}.json.gz",
-    "load_file_list"  : [
+    "input_file_list" : [
       "${saveroot}/raw/${sensor}/${hostname}/json/${yyyymmdd}/${yyyymmdd}[0-9][0-9][0-9][0-9][0-9][0-9].json"
     ]
   },
@@ -78,7 +92,7 @@
       "data.absolute_humidity" : "absolute_humidity"
     },
     "save_file"       : "${saveroot}/daily/${sensor}/${hostname}/json_select/${yyyymmdd}.json.gz",
-    "load_file_list"  : [
+    "input_file_list" : [
       "${saveroot}/raw/${sensor}/${hostname}/json/${yyyymmdd}/${yyyymmdd}[0-9][0-9][0-9][0-9][0-9][0-9].json"
     ]
   }

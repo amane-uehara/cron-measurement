@@ -3,10 +3,10 @@ import json
 from glob import glob
 
 def fetch_json_list(config):
-  load_file_list = fetch_filelist(config["load_file_list"])
+  input_file_list = fetch_filelist(config["input_file_list"])
 
   join_list = []
-  for json_file in load_file_list:
+  for json_file in input_file_list:
     with open(json_file, "r") as f:
       json_data = json.load(f)
       if isinstance(json_data, dict):
