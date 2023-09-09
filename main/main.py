@@ -1,9 +1,8 @@
 import sys
 import json
 from common.read_config_file import read_config_file, apply_time_template
-from common.fetch_filelist import fetch_filelist
 from common.save_file import save_file, save_run_data
-from common.read_json_files import fetch_list_list, json_to_json_list
+from common.read_json_files import fetch_list_list, fetch_json_list
 
 def main(argv):
   title = argv[1]
@@ -39,7 +38,7 @@ def main(argv):
   if program == "json_list_":
     yyyymmddhhmmss = argv[2]
     apply_time = apply_time_template(config, yyyymmddhhmmss)
-    data_list = json_to_json_list.fetch_json_list(apply_time)
+    data_list = fetch_json_list.fetch_json_list(apply_time)
     save_file(json.dumps(data_list), apply_time)
 
 if __name__ == "__main__":
