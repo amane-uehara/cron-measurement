@@ -40,3 +40,7 @@ def save_run_data(data, config):
 
   apply_time = apply_time_template(config, run["dt"])
   save_file(json.dumps(run), apply_time)
+
+def save_csv_file(list_list, config):
+  text = str(json.dumps(list_list,separators=(',',':')).replace("],[","\n").lstrip("[[")).rstrip("\n").rstrip("]]")
+  save_file(text, config)
