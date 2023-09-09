@@ -5,7 +5,6 @@ import gzip
 
 from datetime import datetime
 from uuid import getnode
-from common.read_config_file import apply_time_template
 
 def save_file(text, config):
   filename = config["output_file"]
@@ -34,7 +33,7 @@ def save_file(text, config):
 
 def save_raw_data(data, config):
   run = {}
-  run["dt"]  = datetime.now().strftime("%Y%m%d%H%M%S")
+  run["dt"] = datetime.now().strftime("%Y%m%d%H%M%S")
   run["hostname"] = config["hostname"]
   run["mac_addr"] = hex(getnode())[2:]
 
@@ -44,8 +43,7 @@ def save_raw_data(data, config):
     run["sensor_location"] = config["sensor_location"]
 
   run["data"] = data
-  apply_time = apply_time_template(config, run["dt"])
-  save_json_file(run, apply_time)
+  save_json_file(run, config)
 
 def save_json_file(json_list, config):
   text = json.dumps(json_list, separators=(',',':'))

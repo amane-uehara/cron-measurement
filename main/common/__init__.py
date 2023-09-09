@@ -1,5 +1,6 @@
+from common.read_arg         import read_arg
+
 from common.read_config_file import read_config_file
-from common.read_config_file import apply_time_template
 
 from common.import_sensor    import import_sensor
 
