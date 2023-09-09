@@ -4,6 +4,9 @@ from glob import glob
 
 def fetch_json_list(config):
   input_file_list = fetch_filelist(config["input_file_list"])
+  print("INFO: input file list[0]:  " + input_file_list[0], file=sys.stderr)
+  print("INFO: input file list[-1]: " + input_file_list[-1], file=sys.stderr)
+  print("INFO: number of input files: " + str(len(input_file_list)), file=sys.stderr)
 
   join_list = []
   for json_file in input_file_list:
@@ -15,6 +18,8 @@ def fetch_json_list(config):
         join_list += json_data
 
   sorted_list = sorted(join_list, key=custom_sort)
+  print("INFO: input json list length: " + str(len(sorted_list)), file=sys.stderr)
+
   return sorted_list
 
 def fetch_filelist(glob_filelist):
@@ -22,7 +27,6 @@ def fetch_filelist(glob_filelist):
   for glob_file in glob_filelist:
     ret += glob(glob_file)
   ret.sort()
-  print("INFO: filelist: " + str(ret), file=sys.stderr)
   return ret
 
 def custom_sort(item):

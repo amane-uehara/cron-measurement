@@ -29,7 +29,7 @@ def save_file(text, config):
     with open(filename, "w") as f:
       f.write(text)
       print("INFO: text file saved: " + filename, file=sys.stderr)
-  print("INFO: filesize: " + str(os.path.getsize(filename)), file=sys.stderr)
+  print("INFO: saved file size: " + str(os.path.getsize(filename)), file=sys.stderr)
 
 def save_raw_data(data, config):
   run = {}
