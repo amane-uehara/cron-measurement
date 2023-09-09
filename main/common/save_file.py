@@ -16,14 +16,12 @@ def save_file(text, config):
   if ext == "gz":
     with gzip.open(filename, mode="wt") as f:
       f.write(text)
-      print("gip file saved: " + filename, end="", file=sys.stderr)
-
+      print("INFO: gip file saved: " + filename, file=sys.stderr)
   else:
     with open(filename, "w") as f:
       f.write(text)
-      print("text file saved: " + filename, end="",  file=sys.stderr)
-
-  print(" (" + str(os.path.getsize(filename)) + " byte)", file=sys.stderr)
+      print("INFO: text file saved: " + filename, file=sys.stderr)
+  print("INFO: filesize: " + str(os.path.getsize(filename)), file=sys.stderr)
 
 def save_raw_data(data, config):
   run = {}

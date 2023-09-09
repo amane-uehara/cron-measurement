@@ -13,12 +13,12 @@ def read_config_file(argv):
     try:
       config_all = json.load(f)
     except FileNotFoundError as err:
-      print("invalid config file: " + config_filename, file=sys.stderr)
+      print("ERROR: invalid config file: " + config_filename, file=sys.stderr)
       sys.exit(1)
 
   title = argv[1]
   if not title in config_all:
-    print("invalid title: " + title, file=sys.stderr)
+    print("ERROR: invalid title: " + title, file=sys.stderr)
     sys.exit(1)
 
   config   = config_all[title].copy()

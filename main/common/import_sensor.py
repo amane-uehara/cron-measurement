@@ -17,7 +17,7 @@ def import_sensor(sensor_name):
     print("ERROR: sensor '" + sensor_name + "' is not in /main/sensor/* " + str(sensor_name_list), file=sys.stderr)
     sys.exit(1)
   else:
-    print("INFO: import sensor." + sensor_name, file=sys.stderr)
+    print("INFO: import: sensor." + sensor_name, file=sys.stderr)
     module = import_module("sensor." + sensor_name)
     ret["fetch_json"] = module.fetch_json
     ret["key_list"]   = module.key_list()
