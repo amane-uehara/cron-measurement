@@ -2,6 +2,7 @@ import bluepy
 import struct
 import sys
 import json
+from math import exp, log
 
 def fetch_json(config):
   mac_addr       = config["sensor_mac_addr"]      # "492302f00000"
@@ -18,10 +19,14 @@ def fetch_json(config):
       device.disconnect()
 
       ( data["temperature"],
-        data["humidity"],
+        data["relative_humidity"],
         is_sensor_external,
         crc16_modbus
       ) = struct.unpack("<hhBH", pkt)
+
+      t = data["temperature"]
+      r = data["relative_humidity"]
+      data["absolute_humidity"] = round(217*6.1078*exp(7.5*(t/100.0)*log(10.0)/((t/100.0)+237.3))/((t/100.0)+273.15)*((r/100.0)/100.0)*100)
 
     except:
       continue
@@ -32,7 +37,8 @@ def fetch_json(config):
 def key_list():
   return [
     "temperature",
-    "humidity"
+    "relative_humidity",
+    "absolute_humidity"
   ]
 
 if __name__ == "__main__":
