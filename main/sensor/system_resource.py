@@ -1,6 +1,7 @@
 import psutil
 import socket
 import json
+import time
 
 def fetch_json(config):
   resource = {};
@@ -58,6 +59,7 @@ def fetch_json(config):
 
   resource["uptime"] = {}
   resource["uptime"]["boot_time"] = psutil.boot_time()
+  resource["uptime"]["elapsed"]   = int(time.time() - psutil.boot_time())
   resource["uptime"]["users"]     = len(psutil.users())
 
   resource["sensor"] = {"temperature":0}
