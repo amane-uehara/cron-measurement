@@ -1,6 +1,6 @@
-import json
 import sys
-from common.fetch_filelist import fetch_filelist
+import json
+from glob import glob
 
 def fetch_json_list(config):
   load_file_list = fetch_filelist(config["load_file_list"])
@@ -16,6 +16,14 @@ def fetch_json_list(config):
 
   sorted_list = sorted(join_list, key=custom_sort)
   return sorted_list
+
+def fetch_filelist(glob_filelist):
+  ret = []
+  for glob_file in glob_filelist:
+    ret += glob(glob_file)
+  ret.sort()
+  print("filelist: " + str(ret), file=sys.stderr)
+  return ret
 
 def custom_sort(item):
   if "dt" in item:

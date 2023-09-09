@@ -1,7 +1,7 @@
 import os
 import sys
-import gzip
 import json
+import gzip
 
 from datetime import datetime
 from uuid import getnode
