@@ -21,20 +21,25 @@ def read_config_file(argv):
     print("ERROR: invalid title: " + title, file=sys.stderr)
     sys.exit(1)
 
-  config   = config_all[title].copy()
-  constant = config_all["constant"].copy()
+  target = config_all[title].copy()
 
-  for kc, vc in constant.items():
-    config = json.loads(json.dumps(config).replace("${" + str(kc) + "}", vc))
+  for kc, vc in config_all[title].items():
+    if isinstance(vc, str) or isinstance(vc, int) or isinstance(vc, float):
+      target = json.loads(json.dumps(target).replace("${" + str(kc) + "}", vc))
 
-  for kc, vc in config.items():
-    constant[kc] = vc
+  for kc, vc in config_all["constant"].items():
+    if isinstance(vc, str) or isinstance(vc, int) or isinstance(vc, float):
+      target = json.loads(json.dumps(target).replace("${" + str(kc) + "}", vc))
+
+  ret = config_all["constant"].copy()
+  for kc, vc in target.items():
+    ret[kc] = vc
 
   for key in ["mac_addr", "sensor_mac_addr"]:
-    if key in constant:
-      constant[key] = constant[key].lower().replace(":","")
+    if key in ret:
+      ret[key] = ret[key].lower().replace(":","")
 
-  return constant
+  return ret
 
 def apply_time_template(config, yyyymmddhhmmss):
   day_dict = {}
