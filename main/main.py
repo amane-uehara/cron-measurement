@@ -4,6 +4,7 @@ from importlib import import_module
 from common.read_config_file import read_config_file, apply_time_template
 from common.save_file import save_file, save_run_data
 from common.read_json_files import fetch_list_list, fetch_json_list
+import common.import_sensor
 
 def main(argv):
   config  = read_config_file(argv)
@@ -14,6 +15,7 @@ def main(argv):
     sensor_fetch_json = None
     sensor_key_list = None
   else:
+    common.import_sensor.fetch_sensor_list()
     module = import_module("sensor." + sensor)
     sensor_fetch_json = module.fetch_json
     sensor_key_list = module.key_list
