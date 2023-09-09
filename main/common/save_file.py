@@ -9,6 +9,15 @@ from common.read_config_file import apply_time_template
 
 def save_file(text, config):
   filename = config["save_file"]
+
+  if filename == "${stdout}":
+    print(text, file=sys.stdout)
+    return
+
+  if filename == "${stderr}":
+    print(text, file=sys.stderr)
+    return
+
   filepath = os.path.dirname(filename)
   os.makedirs(filepath, mode=0o777, exist_ok=True)
 
