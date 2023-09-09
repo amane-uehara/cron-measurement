@@ -14,7 +14,8 @@ def main(argv):
   if program == "to_csv":
     yyyymmddhhmmss = argv[2]
     apply_time = apply_time_template(config, yyyymmddhhmmss)
-    list_list = fetch_list_list(apply_time, sensor["key_list"])
+    json_list = fetch_json_list(apply_time)
+    list_list = trans_to_list_list(json_list, apply_time, sensor["key_list"])
     save_csv_file(list_list, apply_time)
 
   if program == "to_json_list":
