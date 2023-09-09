@@ -25,7 +25,7 @@ def read_config_file(argv):
   constant = config_all["constant"].copy()
 
   for kc, vc in constant.items():
-    config = json.loads(json.dumps(config).replace("{" + str(kc) + "}", vc))
+    config = json.loads(json.dumps(config).replace("${" + str(kc) + "}", vc))
 
   for kc, vc in config.items():
     constant[kc] = vc
@@ -52,6 +52,6 @@ def apply_time_template(config, yyyymmddhhmmss):
     day_dict["yyyymmdd+" + str(delay) + ""] = (t + timedelta(days=delay)).strftime("%Y%m%d")
 
   for kc, vc in day_dict.items():
-    config = json.loads(json.dumps(config).replace("{" + str(kc) + "}", vc))
+    config = json.loads(json.dumps(config).replace("${" + str(kc) + "}", vc))
 
   return config
