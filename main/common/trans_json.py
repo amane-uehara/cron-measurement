@@ -47,8 +47,8 @@ def trans_to_selected_json_list(json_list, config):
   ret = []
   for run in json_list:
     tmp = {}
-    for src_key, dst_key in key_dict.items():
-      tmp[dst_key] = key_search(src_key.split("."), run)
+    for input_key, output_key in key_dict.items():
+      tmp[output_key] = key_search(input_key.split("."), run)
     ret.append(tmp)
 
   return ret
