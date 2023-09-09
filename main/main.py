@@ -10,22 +10,22 @@ def main(argv):
   program = config["program"]
 
   if "system_resource" in program:
-    import system_resource
-    fetch_json = system_resource.fetch_json
-    default_data_key_list = system_resource.key_list()
+    import sensor.system_resource
+    fetch_json = sensor.system_resource.fetch_json
+    default_data_key_list = sensor.system_resource.key_list()
 
   if "omron_env_sensor" in program:
-    import omron_env_sensor
-    data = omron_env_sensor.fetch_json()
-    save_run_data(data, config)
+    import sensor.omron_env_sensor
+    fetch_json = sensor.omron_env_sensor.fetch_json
+    default_data_key_list = sensor.omron_env_sensor.key_list()
 
   if "inkbird_env_sensor" in program:
-    import inkbird_env_sensor
-    data = inkbird_env_sensor.fetch_json()
-    save_run_data(data, config)
+    import sensor.inkbird_env_sensor
+    fetch_json = sensor.inkbird_env_sensor.fetch_json
+    default_data_key_list = sensor.inkbird_env_sensor.key_list()
 
   if "fetch_" in program:
-    data = fetch_json()
+    data = fetch_json(config)
     save_run_data(data, config)
 
   if "csv_" in program:

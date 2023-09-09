@@ -2,7 +2,7 @@ import psutil
 import socket
 import json
 
-def fetch_json():
+def fetch_json(config):
   resource = {};
 
   resource["cpu"] = {}
