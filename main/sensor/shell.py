@@ -11,6 +11,7 @@ def fetch_json(config):
 
   print("INFO: shell begin", file=sys.stderr)
   for command_str in command_list:
+    print("$ " + command_str, file=sys.stderr)
     command = subprocess.run(command_str, shell=True, capture_output=True, text=True)
     print(command.stdout, end='', file=sys.stdout)
     print(command.stderr, end='', file=sys.stderr)
