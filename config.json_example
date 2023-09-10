@@ -1,110 +1,56 @@
 {
   "constant": {
-    "hostname": "hostname.is.necessary",
-    "output_oot": "/home/output_root/is/not/necessary"
+    "hostname"            : "foo.bar",
+    "output_root"         : "/foo/bar",
+    "omron_mac_addr"      : "C9:F4:80:00:00:00",
+    "omron_location"      : "here",
+    "inkbird_mac_addr"    : "49:23:0F:00:00:00",
+    "inkbird_location"    : "there",
+    "resource_raw_path"   : "${output_root}/raw/${hostname}/${sensor}/json/${yyyymmdd}",
+    "platform_raw_path"   : "${output_root}/raw/${hostname}/${sensor}/json/${yyyymmdd}",
+    "omron_raw_path"      : "/mnt/ramdisk/omron/${location}",
+    "inkbird_raw_path"    : "/mnt/ramdisk/inkbird/${location}",
+    "default_hourly_path" : "${output_root}/hourly/${hostname}/${sensor}",
+    "default_daily_path"  : "${output_root}/daily/${hostname}/${sensor}"
   },
-  "system_resource_raw": {
+  "raw_system_platform": {
+    "sensor"          : "system_platform",
+    "program"         : "fetch_raw_json",
+    "output_file"     : "${platform_raw_path}/${yyyymmddhhmmss}.json"
+  },
+  "raw_system_resource": {
     "sensor"          : "system_resource",
     "program"         : "fetch_raw_json",
-    "output_file"     : "${output_root}/raw/${sensor}/${hostname}/json/${yyyymmdd}/${yyyymmddhhmmss}.json"
+    "output_file"     : "${resource_raw_path}/${yyyymmddhhmmss}.json"
   },
-  "omron_env_sensor_raw": {
+  "raw_omron_env_sensor": {
     "sensor"          : "omron_env_sensor",
     "program"         : "fetch_raw_json",
-    "output_file"     : "${output_root}/raw/${sensor}/${hostname}/json/${yyyymmdd}/${yyyymmddhhmmss}.json",
-    "sensor_mac_addr" : "C8:B2:44:00:00:00",
-    "sensor_location" : "here",
+    "output_file"     : "${omron_raw_path}/${yyyymmddhhmmss}.json",
+    "sensor_mac_addr" : "${omron_mac_addr}",
+    "sensor_location" : "${omron_location}",
     "bt_retry_count"  : 100,
     "bt_dev_id"       : 0
   },
-  "inkbird_env_sensor_raw": {
+  "raw_inkbird_env_sensor": {
     "sensor"          : "inkbird_env_sensor",
     "program"         : "fetch_raw_json",
-    "output_file"     : "${output_root}/raw/${sensor}/${hostname}/json/${yyyymmdd}/${yyyymmddhhmmss}.json",
-    "sensor_mac_addr" : "49:23:02:F0:00:00",
-    "sensor_location" : "here",
+    "output_file"     : "${inkbird_raw_path}/${yyyymmddhhmmss}.json",
+    "sensor_mac_addr" : "${inkbird_mac_addr}",
+    "sensor_location" : "${inkbird_location}",
     "bt_retry_count"  : 100
   },
-  "system_resource_json_list": {
+  "daily_json_system_resource": {
     "sensor"          : "system_resource",
     "program"         : "to_json_list",
-    "output_file"     : "${output_root}/daily/${sensor}/${hostname}/json/${yyyymmdd}.json.gz",
-    "input_file_list" : [
-      "${output_root}/raw/${sensor}/${hostname}/json/${yyyymmdd}/${yyyymmdd}[0-9][0-9][0-9][0-9][0-9][0-9].json"
-    ]
+    "input_file_list" : ["${resource_raw_path}/${yyyymmdd}*.json"],
+    "output_file"     : "${default_daily_path}/json/${yyyymmdd}.json.gz"
   },
-  "system_resource_csv": {
+  "daily_csv_system_resource": {
     "sensor"          : "system_resource",
     "program"         : "to_csv",
-    "output_file"     : "${output_root}/daily/${sensor}/${hostname}/csv/${yyyymmdd}.csv.gz",
-    "input_file_list" : [
-      "${output_root}/raw/${sensor}/${hostname}/json/${yyyymmdd}/${yyyymmdd}[0-9][0-9][0-9][0-9][0-9][0-9].json"
-    ]
-  },
-  "omron_env_sensor_csv": {
-    "sensor"          : "omron_env_sensor",
-    "program"         : "to_csv",
-    "output_file"     : "${output_root}/daily/${sensor}/${hostname}/csv/${yyyymmdd}.csv.gz",
-    "input_file_list" : [
-      "${output_root}/raw/${sensor}/${hostname}/json/${yyyymmdd}/${yyyymmdd}[0-9][0-9][0-9][0-9][0-9][0-9].json"
-    ]
-  },
-  "system_resource_old_json": {
-    "sensor"          : "system_resource",
-    "program"         : "to_selected_json_list",
-    "key_dict"        : {
-      "dt"                     : "dt",
-      "data.temperature"       : "temperature",
-      "data.relative_humidity" : "relative_humidity",
-      "data.absolute_humidity" : "absolute_humidity"
-    },
-    "output_file"     : "${stdout}",
-    "input_file_list" : [
-      "${output_root}/raw/${sensor}/${hostname}/json/${yyyymmdd}/${yyyymmdd}[0-9][0-9][0-9][0-9][0-9][0-9].json"
-    ]
-  },
-  "omron_env_sensor_old_json": {
-    "sensor"          : "omron_env_sensor",
-    "program"         : "to_selected_json_list",
-    "key_dict"        : {
-      "dt"                       : "dt",
-      "data.temperature"         : "temperature",
-      "data.relative_humidity"   : "relative_humidity",
-      "data.ambient_light"       : "ambient_light",
-      "data.barometric_pressure" : "barometric_pressure",
-      "data.sound_noise"         : "sound_noise",
-      "data.etvoc"               : "etvoc",
-      "data.eco2"                : "eco2",
-      "data.absolute_humidity"   : "absolute_humidity"
-    },
-    "output_file"     : "${output_root}/daily/${sensor}/${hostname}/json_select/${yyyymmdd}.json.gz",
-    "input_file_list" : [
-      "${output_root}/raw/${sensor}/${hostname}/json/${yyyymmdd}/${yyyymmdd}[0-9][0-9][0-9][0-9][0-9][0-9].json"
-    ]
-  },
-  "inkbird_env_sensor_old_json": {
-    "sensor"          : "inkbird_env_sensor",
-    "program"         : "to_selected_json_list",
-    "key_dict"        : {
-      "dt"                     : "dt",
-      "data.temperature"       : "temperature",
-      "data.relative_humidity" : "relative_humidity",
-      "data.absolute_humidity" : "absolute_humidity"
-    },
-    "output_file"     : "${output_root}/daily/${sensor}/${hostname}/json_select/${yyyymmdd}.json.gz",
-    "input_file_list" : [
-      "${output_root}/raw/${sensor}/${hostname}/json/${yyyymmdd}/${yyyymmdd}[0-9][0-9][0-9][0-9][0-9][0-9].json"
-    ]
-  },
-  "shell_example": {
-    "sensor"          : "shell",
-    "program"         : "fetch_raw_json",
-    "command_list"    : [
-      "pwd",
-      "ls -l",
-      "echo 'sensor is ${sensor}'",
-      "echo 'today is ${yyyymmdd}'",
-      "echo 'now is ${yyyymmddhhmmss}'"
-    ]
+    "run_key_list"    : ["dt", "hostname", "mac_addr"],
+    "input_file_list" : ["${resource_raw_path}/${yyyymmdd}*.json"],
+    "output_file"     : "${default_daily_path}/csv/${yyyymmdd}.csv.gz"
   }
 }
