@@ -1,17 +1,17 @@
+import platform
 import psutil
 import socket
 import json
 import time
+from uuid import getnode
 
 def fetch_json(config):
   resource = {};
 
   resource["cpu"] = {}
-  resource["cpu"]["core_logical"]  = psutil.cpu_count(logical=True)
-  resource["cpu"]["core_physical"] = psutil.cpu_count(logical=False)
-  resource["cpu"]["freq_current"]  = psutil.cpu_freq().current
-  resource["cpu"]["freq_min"]      = psutil.cpu_freq().min
-  resource["cpu"]["freq_max"]      = psutil.cpu_freq().max
+  resource["cpu"]["freq_current"] = psutil.cpu_freq().current
+  resource["cpu"]["freq_min"]     = psutil.cpu_freq().min
+  resource["cpu"]["freq_max"]     = psutil.cpu_freq().max
 
   loadavg = psutil.getloadavg()
   resource["cpu"]["loadavg_1"]  = loadavg[0]
@@ -25,6 +25,8 @@ def fetch_json(config):
   resource["mem"]["used"]                  = round(mem.used / 1024.0)
   resource["mem"]["free"]                  = round(mem.free / 1024.0)
   resource["mem"]["available"]             = round(mem.available / 1024.0)
+  resource["mem"]["buffers"]               = round(mem.buffers / 1024.0)
+  resource["mem"]["cached"]                = round(mem.cached / 1024.0)
   resource["mem"]["total_minus_available"] = round((mem.total - mem.available) / 1024.0)
   resource["mem"]["ratio"]                 = round(mem.percent / 100.0, 5) # (total-available)/total
 
@@ -58,33 +60,42 @@ def fetch_json(config):
   resource["network"]["ip_addr"] = connect_interface.getsockname()[0]
   connect_interface.close()
 
+  resource["network"]["mac_addr"] = hex(getnode())[2:]
+
   resource["uptime"] = {}
   resource["uptime"]["boot_time"] = psutil.boot_time()
   resource["uptime"]["elapsed"]   = int(time.time() - psutil.boot_time())
   resource["uptime"]["users"]     = len(psutil.users())
 
-  resource["sensor"] = {"temperature":0}
+  resource["sensor"] = {}
+
   if "cpu_thermal" in psutil.sensors_temperatures():
-    if psutil.sensors_temperatures()["cpu_thermal"][0]:
-      resource["sensor"]["temperature"] = int(psutil.sensors_temperatures()["cpu_thermal"][0].current * 1000)
+    t = psutil.sensors_temperatures()["cpu_thermal"]
+    if len(t) > 0:
+      resource["sensor"]["temperature"] = round(t[0].current * 1000)
+
+  if "coretemp" in psutil.sensors_temperatures():
+    t = psutil.sensors_temperatures()["coretemp"]
+    if len(t) > 0:
+      resource["sensor"]["temperature"] = round(t[0].current * 1000)
 
   return resource
 
 def key_list():
   return [
-    "cpu.core_logical",
-    "cpu.core_physical",
     "cpu.freq_current",
     "cpu.freq_min",
     "cpu.freq_max",
     "cpu.loadavg_1",
     "cpu.loadavg_5",
     "cpu.loadavg_15",
-    "cpu.ratio",
+    "cpu.percent",
     "mem.total",
     "mem.used",
     "mem.free",
     "mem.available",
+    "mem.buffers",
+    "mem.cached",
     "mem.total_minus_available",
     "mem.ratio",
     "swap.total",
@@ -104,8 +115,11 @@ def key_list():
     "network.dropin",
     "network.dropout",
     "network.ip_addr",
+    "network.mac_addr",
     "uptime.boot_time",
+    "uptime.elapsed",
     "uptime.users",
+    "sensor.temperature",
     "sensor.temperature"
   ]
 
