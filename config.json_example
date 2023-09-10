@@ -95,5 +95,16 @@
     "input_file_list" : [
       "${output_root}/raw/${sensor}/${hostname}/json/${yyyymmdd}/${yyyymmdd}[0-9][0-9][0-9][0-9][0-9][0-9].json"
     ]
+  },
+  "shell_example": {
+    "sensor"          : "shell",
+    "program"         : "fetch_raw_json",
+    "command_list"    : [
+      "pwd",
+      "ls -l",
+      "echo 'sensor is ${sensor}'",
+      "echo 'today is ${yyyymmdd}'",
+      "echo 'now is ${yyyymmddhhmmss}'"
+    ]
   }
 }
