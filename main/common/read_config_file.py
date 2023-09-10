@@ -54,7 +54,7 @@ def replace_config_variable(config, replacer):
 
   for kc, vc in replacer.items():
     if isinstance(vc, str) or isinstance(vc, int) or isinstance(vc, float):
-      ret = json.loads(json.dumps(ret).replace("${" + str(kc) + "}", vc))
+      ret = json.loads(json.dumps(ret).replace("${" + str(kc) + "}", str(vc)))
 
   return ret
 
