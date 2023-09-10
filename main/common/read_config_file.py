@@ -18,15 +18,16 @@ def read_config_file(arg_dict):
 
   config_all["constant"]["yyyymmddhhmmss"] = arg_dict["yyyymmddhhmmss"]
   config_all = replace_config_time(config_all, arg_dict["yyyymmddhhmmss"])
-  replaced_constant = replace_config_variable(config_all["constant"], config_all[title])
-  replaced_target   = replace_config_variable(config_all[title], replaced_constant)
-  replaced_self     = replace_config_variable(replaced_target, replaced_target)
 
-  ret = replaced_constant.copy()
-  for kc, vc in replaced_self.items():
-    ret[kc] = vc
+  constant = config_all["constant"].copy()
+  target   = config_all[title].copy()
 
-  ret = format_config(ret)
+  for kc, vc in constant.items():
+    if not kc in target:
+      target[kc] = vc
+
+  target = replace_self(target)
+  ret = format_config(target)
 
   print("INFO: config: " + str(ret), file=sys.stderr)
   return ret
@@ -53,6 +54,16 @@ def replace_config_variable(config, replacer):
   ret = config.copy()
 
   for kc, vc in replacer.items():
+    if isinstance(vc, str) or isinstance(vc, int) or isinstance(vc, float):
+      ret = json.loads(json.dumps(ret).replace("${" + str(kc) + "}", str(vc)))
+
+  return ret
+
+def replace_self(target):
+  ret = target.copy()
+
+  for kc in target.keys():
+    vc = ret[kc]
     if isinstance(vc, str) or isinstance(vc, int) or isinstance(vc, float):
       ret = json.loads(json.dumps(ret).replace("${" + str(kc) + "}", str(vc)))
 
