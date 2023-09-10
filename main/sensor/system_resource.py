@@ -21,25 +21,26 @@ def fetch_json(config):
 
   mem = psutil.virtual_memory()
   resource["mem"] = {}
-  resource["mem"]["total"]     = mem.total
-  resource["mem"]["used"]      = mem.used
-  resource["mem"]["free"]      = mem.free
-  resource["mem"]["available"] = mem.available
-  resource["mem"]["percent"]   = mem.percent
+  resource["mem"]["total"]                 = round(mem.total / 1024.0)
+  resource["mem"]["used"]                  = round(mem.used / 1024.0)
+  resource["mem"]["free"]                  = round(mem.free / 1024.0)
+  resource["mem"]["available"]             = round(mem.available / 1024.0)
+  resource["mem"]["total_minus_available"] = round((mem.total - mem.available) / 1024.0)
+  resource["mem"]["ratio"]                 = round(mem.percent / 100.0, 5) # (total-available)/total
 
   swap = psutil.swap_memory()
   resource["swap"] = {}
-  resource["swap"]["total"]   = swap.total
-  resource["swap"]["used"]    = swap.used
-  resource["swap"]["free"]    = swap.free
-  resource["swap"]["percent"] = swap.percent
+  resource["swap"]["total"] = round(swap.total / 1024.0)
+  resource["swap"]["used"]  = round(swap.used / 1024.0)
+  resource["swap"]["free"]  = round(swap.free / 1024.0)
+  resource["swap"]["ratio"] = round(swap.percent / 100.0, 5)
 
   disk = psutil.disk_usage("/")
   resource["disk"] = {}
-  resource["disk"]["total"]   = disk.total
-  resource["disk"]["used"]    = disk.used
-  resource["disk"]["free"]    = disk.free
-  resource["disk"]["percent"] = disk.percent
+  resource["disk"]["total"] = round(disk.total / 1024.0)
+  resource["disk"]["used"]  = round(disk.used / 1024.0)
+  resource["disk"]["free"]  = round(disk.free / 1024.0)
+  resource["disk"]["ratio"] = round(disk.percent / 100.0, 5)
 
   network = psutil.net_io_counters()
   resource["network"] = {}
@@ -65,7 +66,7 @@ def fetch_json(config):
   resource["sensor"] = {"temperature":0}
   if "cpu_thermal" in psutil.sensors_temperatures():
     if psutil.sensors_temperatures()["cpu_thermal"][0]:
-      resource["sensor"]["temperature"] = int(psutil.sensors_temperatures()["cpu_thermal"][0].current)
+      resource["sensor"]["temperature"] = int(psutil.sensors_temperatures()["cpu_thermal"][0].current * 1000)
 
   return resource
 
@@ -79,20 +80,21 @@ def key_list():
     "cpu.loadavg_1",
     "cpu.loadavg_5",
     "cpu.loadavg_15",
-    "cpu.percent",
+    "cpu.ratio",
     "mem.total",
     "mem.used",
     "mem.free",
     "mem.available",
-    "mem.percent",
+    "mem.total_minus_available",
+    "mem.ratio",
     "swap.total",
     "swap.used",
     "swap.free",
-    "swap.percent",
+    "swap.ratio",
     "disk.total",
     "disk.used",
     "disk.free",
-    "disk.percent",
+    "disk.ratio",
     "network.bytes_sent",
     "network.bytes_recv",
     "network.packets_sent",
