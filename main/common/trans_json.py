@@ -29,6 +29,8 @@ def search_write(key_str, value, data_dict):
 def default_run_key_list():
   return [
     "dt",
+    "yyyymmdd",
+    "hh",
     "hostname",
     "mac_addr",
     "sensor_mac_addr",

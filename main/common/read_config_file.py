@@ -16,8 +16,7 @@ def read_config_file(arg_dict):
     print("ERROR: invalid title: " + title, file=sys.stderr)
     sys.exit(1)
 
-  config_all["constant"]["yyyymmddhhmmss"] = arg_dict["yyyymmddhhmmss"]
-  config_all = replace_config_time(config_all, arg_dict["yyyymmddhhmmss"])
+  config_all = replace_config_time(config_all, arg_dict["yyyymmddhhmmss"], config_all[title])
 
   constant = config_all["constant"].copy()
   target   = config_all[title].copy()
@@ -32,10 +31,18 @@ def read_config_file(arg_dict):
   print("INFO: config: " + str(ret), file=sys.stderr)
   return ret
 
-def replace_config_time(config, yyyymmddhhmmss):
+def replace_config_time(config, yyyymmddhhmmss, title):
   day_dict = {}
-  t = datetime.strptime(yyyymmddhhmmss, "%Y%m%d%H%M%S")
+
+  if "add_dt_sec" in title:
+    add_dt_sec = int(title["add_dt_sec"])
+  else:
+    add_dt_sec = 0
+
+  t = datetime.strptime(yyyymmddhhmmss, "%Y%m%d%H%M%S") + timedelta(seconds=add_dt_sec)
   day_dict["yyyymmddhhmmss"] = t.strftime("%Y%m%d%H%M%S")
+  day_dict["yyyymmddhhmm"] = t.strftime("%Y%m%d%H%M")
+  day_dict["yyyymmddhh"] = t.strftime("%Y%m%d%H")
   day_dict["yyyymmdd"] = t.strftime("%Y%m%d")
   day_dict["hhmmss"] = t.strftime("%H%M%S")
   day_dict["yyyy"] = t.strftime("%Y")
@@ -51,15 +58,22 @@ def replace_config_time(config, yyyymmddhhmmss):
     day_dict["yyyymmddhh-" + str(delay) + ""] = (t - timedelta(hours=delay)).strftime("%Y%m%d%H")
     day_dict["yyyymmddhh+" + str(delay) + ""] = (t + timedelta(hours=delay)).strftime("%Y%m%d%H")
 
-  for delay in range(1441): # 1 day
+  for delay in range(61): # 1 hour
     day_dict["yyyymmddhhmm-" + str(delay) + ""] = (t - timedelta(minutes=delay)).strftime("%Y%m%d%H%M")
     day_dict["yyyymmddhhmm+" + str(delay) + ""] = (t + timedelta(minutes=delay)).strftime("%Y%m%d%H%M")
 
-  for delay in range(3601): # 1 hour
-    day_dict["yyyymmddhhmmss-" + str(delay) + ""] = (t - timedelta(seconds=delay)).strftime("%Y%m%d%H%M%S")
-    day_dict["yyyymmddhhmmss+" + str(delay) + ""] = (t + timedelta(seconds=delay)).strftime("%Y%m%d%H%M%S")
-
   ret = replace_config_variable(config, day_dict)
+
+  ret["constant"]["yyyymmddhhmmss"] = day_dict["yyyymmddhhmmss"]
+  ret["constant"]["yyyymmddhhmm"] = day_dict["yyyymmddhhmm"]
+  ret["constant"]["yyyymmddhh"] = day_dict["yyyymmddhh"]
+  ret["constant"]["yyyymmdd"] = day_dict["yyyymmdd"]
+  ret["constant"]["hhmmss"] = day_dict["hhmmss"]
+  ret["constant"]["yyyy"] = day_dict["yyyy"]
+  ret["constant"]["hh"] = day_dict["hh"]
+  ret["constant"]["mm"] = day_dict["mm"]
+  ret["constant"]["ss"] = day_dict["ss"]
+
   return ret
 
 def replace_config_variable(config, replacer):

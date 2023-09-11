@@ -33,7 +33,9 @@ def save_file(text, config):
 
 def save_raw_data(data, config):
   run = {}
-  run["dt"] = datetime.now().strftime("%Y%m%d%H%M%S")
+  run["dt"]       = config["yyyymmddhhmmss"]
+  run["yyyymmdd"] = config["yyyymmdd"]
+  run["hh"]       = config["hh"]
   run["hostname"] = config["hostname"]
   run["mac_addr"] = hex(getnode())[2:]
 
