@@ -8,8 +8,8 @@
     "inkbird_location"    : "there",
     "resource_raw_path"   : "${output_root}/raw/${hostname}/${sensor}/json/${yyyymmdd}",
     "platform_raw_path"   : "${output_root}/raw/${hostname}/${sensor}/json/${yyyymmdd}",
-    "omron_raw_path"      : "/mnt/ramdisk/omron/${location}",
-    "inkbird_raw_path"    : "/mnt/ramdisk/inkbird/${location}",
+    "omron_raw_path"      : "/mnt/ramdisk/omron/${sensor_location}",
+    "inkbird_raw_path"    : "/mnt/ramdisk/inkbird/${sensor_location}",
     "default_hourly_path" : "${output_root}/hourly/${hostname}/${sensor}",
     "default_daily_path"  : "${output_root}/daily/${hostname}/${sensor}"
   },
