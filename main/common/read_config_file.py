@@ -43,9 +43,21 @@ def replace_config_time(config, yyyymmddhhmmss):
   day_dict["mm"] = t.strftime("%M")
   day_dict["ss"] = t.strftime("%S")
 
-  for delay in range(366):
+  for delay in range(366): # 1 year
     day_dict["yyyymmdd-" + str(delay) + ""] = (t - timedelta(days=delay)).strftime("%Y%m%d")
     day_dict["yyyymmdd+" + str(delay) + ""] = (t + timedelta(days=delay)).strftime("%Y%m%d")
+
+  for delay in range(169): # 1 week
+    day_dict["yyyymmddhh-" + str(delay) + ""] = (t - timedelta(hours=delay)).strftime("%Y%m%d%H")
+    day_dict["yyyymmddhh+" + str(delay) + ""] = (t + timedelta(hours=delay)).strftime("%Y%m%d%H")
+
+  for delay in range(1441): # 1 day
+    day_dict["yyyymmddhhmm-" + str(delay) + ""] = (t - timedelta(minutes=delay)).strftime("%Y%m%d%H%M")
+    day_dict["yyyymmddhhmm+" + str(delay) + ""] = (t + timedelta(minutes=delay)).strftime("%Y%m%d%H%M")
+
+  for delay in range(3601): # 1 hour
+    day_dict["yyyymmddhhmmss-" + str(delay) + ""] = (t - timedelta(seconds=delay)).strftime("%Y%m%d%H%M%S")
+    day_dict["yyyymmddhhmmss+" + str(delay) + ""] = (t + timedelta(seconds=delay)).strftime("%Y%m%d%H%M%S")
 
   ret = replace_config_variable(config, day_dict)
   return ret
