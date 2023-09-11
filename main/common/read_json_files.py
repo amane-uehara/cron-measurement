@@ -1,5 +1,6 @@
 import sys
 import json
+import gzip
 from glob import glob
 
 def fetch_json_list(config):
@@ -9,13 +10,23 @@ def fetch_json_list(config):
   print("INFO: number of input files: " + str(len(input_file_list)), file=sys.stderr)
 
   join_list = []
-  for json_file in input_file_list:
-    with open(json_file, "r") as f:
-      json_data = json.load(f)
-      if isinstance(json_data, dict):
-        join_list.append(json_data)
-      if isinstance(json_data, list):
-        join_list += json_data
+
+  for filename in input_file_list:
+    ext = filename.split(".")[-1]
+    if ext == "gz":
+      with gzip.open(filename, 'r') as f:
+        json_data = json.load(f)
+        if isinstance(json_data, dict):
+          join_list.append(json_data)
+        if isinstance(json_data, list):
+          join_list += json_data
+    else:
+      with open(filename, "r") as f:
+        json_data = json.load(f)
+        if isinstance(json_data, dict):
+          join_list.append(json_data)
+        if isinstance(json_data, list):
+          join_list += json_data
 
   sorted_list = sorted(join_list, key=custom_sort)
   print("INFO: input json list length: " + str(len(sorted_list)), file=sys.stderr)
