@@ -26,5 +26,10 @@ def main():
     selected_json_list = trans_to_selected_json_list(json_list, config)
     save_json_file(selected_json_list, config)
 
+  if program == "to_percentile_json_list":
+    json_list = fetch_json_list(config)
+    selected_json_list = trans_to_percentile_json_list(json_list, config, sensor["key_list"])
+    save_json_file(selected_json_list, config)
+
 if __name__ == "__main__":
   main()
