@@ -35,7 +35,6 @@ def save_raw_data(data, config):
   run = {}
   run["dt"]       = config["yyyymmddhhmmss"]
   run["yyyymmdd"] = config["yyyymmdd"]
-  run["hh"]       = config["hh"]
   run["hostname"] = config["hostname"]
   run["mac_addr"] = hex(getnode())[2:]
 

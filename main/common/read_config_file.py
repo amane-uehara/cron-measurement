@@ -1,5 +1,6 @@
 import sys
 import json
+import re
 from datetime import datetime, timedelta
 from pathlib import Path
 
@@ -16,63 +17,82 @@ def read_config_file(arg_dict):
     print("ERROR: invalid title: " + title, file=sys.stderr)
     sys.exit(1)
 
-  config_all = replace_config_time(config_all, arg_dict["yyyymmddhhmmss"], config_all[title])
-
-  constant = config_all["constant"].copy()
-  target   = config_all[title].copy()
+  target    = config_all[title].copy()
+  constant  = config_all["constant"].copy()
+  time_dict = create_time_dict(arg_dict["yyyymmddhhmmss"])
 
   for kc, vc in constant.items():
     if not kc in target:
       target[kc] = vc
 
+  for kc, vc in time_dict.items():
+    target[kc] = vc
+
+  target["repository_path"] = arg_dict["repository_path"]
+
   target = replace_self(target)
+  target = replace_config_shift_time(target, arg_dict["yyyymmddhhmmss"])
   ret = format_config(target)
 
   print("INFO: config: " + str(ret), file=sys.stderr)
   return ret
 
-def replace_config_time(config, yyyymmddhhmmss, title):
-  day_dict = {}
+def replace_config_shift_time(config, yyyymmddhhmmss):
+  replacer_list = [
+    {
+      "match": "\${yyyymmddhhmmss[-+][0-9][0-9]*}",
+      "strf" : "%Y%m%d%H%M%S",
+      "delta": lambda x: timedelta(seconds=x)
+    },
+    {
+      "match": "\${yyyymmddhhmm[-+][0-9][0-9]*}",
+      "strf" : "%Y%m%d%H%M",
+      "delta": lambda x: timedelta(minutes=x)
+    },
+    {
+      "match": "\${yyyymmddhh[-+][0-9][0-9]*}",
+      "strf" : "%Y%m%d%H",
+      "delta": lambda x: timedelta(hours=x)
+    },
+    {
+      "match": "\${yyyymmdd[-+][0-9][0-9]*}",
+      "strf" : "%Y%m%d",
+      "delta": lambda x: timedelta(days=x)
+    },
+    {
+      "match": "\${yyyymm[-+][0-9][0-9]*}",
+      "strf" : "%Y%m",
+      "delta": lambda x: timedelta(months=x)
+    },
+    {
+      "match": "\${yyyy[-+][0-9][0-9]*}",
+      "strf" : "%Y",
+      "delta": lambda x: timedelta(years=x)
+    }
+  ]
 
-  if "add_dt_sec" in title:
-    add_dt_sec = int(title["add_dt_sec"])
-  else:
-    add_dt_sec = 0
+  original_time = datetime.strptime(yyyymmddhhmmss, "%Y%m%d%H%M%S")
+  config_str = json.dumps(config)
 
-  t = datetime.strptime(yyyymmddhhmmss, "%Y%m%d%H%M%S") + timedelta(seconds=add_dt_sec)
-  day_dict["yyyymmddhhmmss"] = t.strftime("%Y%m%d%H%M%S")
-  day_dict["yyyymmddhhmm"] = t.strftime("%Y%m%d%H%M")
-  day_dict["yyyymmddhh"] = t.strftime("%Y%m%d%H")
-  day_dict["yyyymmdd"] = t.strftime("%Y%m%d")
-  day_dict["hhmmss"] = t.strftime("%H%M%S")
-  day_dict["yyyy"] = t.strftime("%Y")
-  day_dict["hh"] = t.strftime("%H")
-  day_dict["mm"] = t.strftime("%M")
-  day_dict["ss"] = t.strftime("%S")
+  for r in replacer_list:
+    item_list = re.findall(r["match"], config_str)
+    for item in item_list:
+      shift = int(re.findall("[-+][0-9][0-9]*", item)[0])
+      value = (original_time + r["delta"](shift)).strftime(r["strf"])
+      config_str = config_str.replace(item, value)
 
-  for delay in range(366): # 1 year
-    day_dict["yyyymmdd-" + str(delay) + ""] = (t - timedelta(days=delay)).strftime("%Y%m%d")
-    day_dict["yyyymmdd+" + str(delay) + ""] = (t + timedelta(days=delay)).strftime("%Y%m%d")
+  return json.loads(config_str)
 
-  for delay in range(169): # 1 week
-    day_dict["yyyymmddhh-" + str(delay) + ""] = (t - timedelta(hours=delay)).strftime("%Y%m%d%H")
-    day_dict["yyyymmddhh+" + str(delay) + ""] = (t + timedelta(hours=delay)).strftime("%Y%m%d%H")
+def create_time_dict(yyyymmddhhmmss):
+  ret = {}
 
-  for delay in range(61): # 1 hour
-    day_dict["yyyymmddhhmm-" + str(delay) + ""] = (t - timedelta(minutes=delay)).strftime("%Y%m%d%H%M")
-    day_dict["yyyymmddhhmm+" + str(delay) + ""] = (t + timedelta(minutes=delay)).strftime("%Y%m%d%H%M")
-
-  ret = replace_config_variable(config, day_dict)
-
-  ret["constant"]["yyyymmddhhmmss"] = day_dict["yyyymmddhhmmss"]
-  ret["constant"]["yyyymmddhhmm"] = day_dict["yyyymmddhhmm"]
-  ret["constant"]["yyyymmddhh"] = day_dict["yyyymmddhh"]
-  ret["constant"]["yyyymmdd"] = day_dict["yyyymmdd"]
-  ret["constant"]["hhmmss"] = day_dict["hhmmss"]
-  ret["constant"]["yyyy"] = day_dict["yyyy"]
-  ret["constant"]["hh"] = day_dict["hh"]
-  ret["constant"]["mm"] = day_dict["mm"]
-  ret["constant"]["ss"] = day_dict["ss"]
+  t = datetime.strptime(yyyymmddhhmmss, "%Y%m%d%H%M%S")
+  ret["yyyymmddhhmmss"] = t.strftime("%Y%m%d%H%M%S")
+  ret["yyyymmddhhmm"] = t.strftime("%Y%m%d%H%M")
+  ret["yyyymmddhh"] = t.strftime("%Y%m%d%H")
+  ret["yyyymmdd"] = t.strftime("%Y%m%d")
+  ret["yyyymm"] = t.strftime("%Y%m")
+  ret["yyyy"] = t.strftime("%Y")
 
   return ret
 

@@ -6,8 +6,8 @@ from datetime import datetime
 def read_arg():
   now_yyyymmddhhmmss  = datetime.now().strftime("%Y%m%d%H%M%S")
 
-  root_path = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-  default_config_file = os.path.join(root_path, "config.json")
+  repository_path = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+  default_config_file = os.path.join(repository_path, "config.json")
 
   parser = argparse.ArgumentParser()
   parser.add_argument("title", type=str)
@@ -16,7 +16,10 @@ def read_arg():
   args = parser.parse_args()
 
   ret = vars(args)
-  ret["config_abspath"] = os.path.abspath(ret["config"])
+  ret["config_abspath"]  = os.path.abspath(ret["config"])
+  ret["config_rawpath"]  = ret["config"]
+  ret["repository_path"] = repository_path
+
   del ret["config"]
 
   print("INFO: arg: " + str(ret), file=sys.stderr)
