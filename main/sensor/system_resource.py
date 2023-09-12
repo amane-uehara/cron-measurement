@@ -43,11 +43,11 @@ def fetch_json(config):
 
   try: cpu_freq = psutil.cpu_freq()
   except: pass
-  try: resource["cpu"]["freq_current"] = cpu_freq().current
+  try: resource["cpu"]["freq_current"] = cpu_freq.current
   except: pass
-  try: resource["cpu"]["freq_min"]     = cpu_freq().min
+  try: resource["cpu"]["freq_min"]     = cpu_freq.min
   except: pass
-  try: resource["cpu"]["freq_max"]     = cpu_freq().max
+  try: resource["cpu"]["freq_max"]     = cpu_freq.max
   except: pass
 
   try: loadavg = psutil.getloadavg()
