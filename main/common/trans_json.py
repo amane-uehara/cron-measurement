@@ -13,6 +13,9 @@ def search_read(key_str, data_dict):
     return search_read(".".join(key_list), data_dict[key])
 
 def search_write(key_str, value, data_dict):
+  if not isinstance(data_dict, dict):
+    return {}
+
   key_list = key_str.split(".")
   ret = data_dict.copy()
 
@@ -88,12 +91,16 @@ def trans_to_percentile_json_list(json_list, config, default_data_key_list):
     tmp = []
     for run in json_list:
       tmp.append(search_read(key, run))
+    tmp = list(filter(lambda x: x != "", tmp))
     tmp.sort()
 
     for i in range(div):
-      index = int((len(tmp)-1)*i/div)
-      value = tmp[index]
-      ret[i] = search_write(key, value, ret[i])
+      if len(tmp) == 0:
+        ret[i] = ""
+      else:
+        index = int((len(tmp)-1)*i/div)
+        value = tmp[index]
+        ret[i] = search_write(key, value, ret[i])
   return ret
 
 def join_run_data_key_list(default_run_key_list, default_data_key_list, config):
