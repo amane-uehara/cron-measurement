@@ -58,7 +58,7 @@ def fetch_json(config):
   except: pass
   try: resource["cpu"]["loadavg_15"] = loadavg[2]
   except: pass
-  try: resource["cpu"]["percent"]    = psutil.cpu_percent(interval=1)
+  try: resource["cpu"]["ratio"]      = round(psutil.cpu_ratio(interval=1) / 100.0, 5)
   except: pass
 
   try: mem = psutil.virtual_memory()
@@ -171,7 +171,7 @@ def key_list():
     "cpu.loadavg_1",
     "cpu.loadavg_5",
     "cpu.loadavg_15",
-    "cpu.percent",
+    "cpu.ratio",
     "mem.total",
     "mem.used",
     "mem.free",
@@ -201,7 +201,6 @@ def key_list():
     "uptime.boot_time",
     "uptime.elapsed",
     "uptime.users",
-    "sensor.temperature",
     "sensor.temperature"
   ]
 
