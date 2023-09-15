@@ -85,3 +85,13 @@ $ sudo su root
 ```
 
 Command line argument `49:23:02:F0:00:00` is inkbird sensor's mac address.
+
+## iCloud
+
+iCloud GPS Fetcher.
+
+### Install
+
+```
+$ pip3 install pyicloud
+```
