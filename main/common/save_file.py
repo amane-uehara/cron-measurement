@@ -38,10 +38,6 @@ def save_raw_data(data, config):
   run["hostname"] = config["hostname"]
   run["mac_addr"] = hex(getnode())[2:]
 
-  if "sensor_mac_addr" in config:
-    run["sensor_mac_addr"] = config["sensor_mac_addr"].lower().replace(":","")
-  if "sensor_location" in config:
-    run["sensor_location"] = config["sensor_location"]
   if "extra" in config:
     run["extra"] = config["extra"]
 
