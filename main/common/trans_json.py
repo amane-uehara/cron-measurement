@@ -1,4 +1,5 @@
 import sys
+import json
 from math import floor
 
 def search_read(key_str, data_dict):
@@ -58,7 +59,7 @@ def trans_to_selected_json_list(json_list, config):
   else:
     print("ERROR: key_dict not found", file=sys.stderr)
     sys.exit(1)
-  print("INFO: key_dict " + str(key_dict), file=sys.stderr)
+  print("INFO: key_dict " + json.dumps(key_dict, indent=2), file=sys.stderr)
 
   ret = []
   for run in json_list:
@@ -109,5 +110,5 @@ def join_run_data_key_list(default_run_key_list, default_data_key_list, config):
   if "data_key_list" in config: data_key_list = config["data_key_list"]
   else:                         data_key_list = default_data_key_list
   key_list = run_key_list + list(map(lambda x: "data." + x, data_key_list))
-  print("INFO: csv_key: " + str(key_list), file=sys.stderr)
+  print("INFO: csv_key: " + json.dumps(key_list, indent=2), file=sys.stderr)
   return key_list

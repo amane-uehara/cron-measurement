@@ -1,6 +1,7 @@
 import os
 import sys
 import argparse
+import json
 from datetime import datetime
 
 def read_arg():
@@ -22,7 +23,7 @@ def read_arg():
 
   del ret["config"]
 
-  print("INFO: arg: " + str(ret), file=sys.stderr)
+  print("INFO: arg: " + json.dumps(ret, indent=2), file=sys.stderr)
 
   if "title" not in ret:
     print("ERROR: command line argument `title` not found", file=sys.stderr)

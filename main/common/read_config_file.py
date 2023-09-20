@@ -34,7 +34,7 @@ def read_config_file(arg_dict):
   target = replace_config_shift_time(target, arg_dict["yyyymmddhhmmss"])
   ret = format_config(target)
 
-  print("INFO: config: " + str(ret), file=sys.stderr)
+  print("INFO: config: " + json.dumps(ret, indent=2), file=sys.stderr)
   return ret
 
 def replace_config_shift_time(config, yyyymmddhhmmss):
