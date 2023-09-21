@@ -29,7 +29,12 @@ def read_config_file(arg_dict):
     target[kc] = vc
 
   target["repository_path"] = arg_dict["repository_path"]
-  target["dryrun"] = arg_dict["dryrun"]
+  target["exec_main_py"]    = arg_dict["exec_main_py"]
+  target["opt_config"]      = "--config " + arg_dict["config_abspath"]
+  target["dryrun"]          = arg_dict["dryrun"]
+
+  if arg_dict["dryrun"] :
+    target["opt_config"] += " --dryrun"
 
   target = replace_self(target)
   target = replace_config_shift_time(target, arg_dict["yyyymmddhhmmss"])

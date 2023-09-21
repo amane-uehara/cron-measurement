@@ -21,6 +21,7 @@ def read_arg():
   ret["config_abspath"]  = os.path.abspath(ret["config"])
   ret["config_rawpath"]  = ret["config"]
   ret["repository_path"] = repository_path
+  ret["exec_main_py"]    = sys.executable + " " + sys.argv[0]
 
   del ret["config"]
 
