@@ -1,8 +1,8 @@
 {
   "constant": {
     "hostname"            : "...",
-    "default_save_root"   : "/.../.../..."
-    "default_raw_root"    : "/.../.../..."
+    "default_save_root"   : "/.../.../...",
+    "default_raw_root"    : "/.../.../...",
 
     "default_hourly_path" : "${default_save_root}/hourly/${hostname}/${sensor}",
     "default_daily_path"  : "${default_save_root}/daily/${hostname}/${sensor}",
@@ -56,7 +56,10 @@
       "${exec_main_py} 'hourly_omron_env_sensor_csv'    ${opt_config} ${opt_1hour_ago}",
 
       "${exec_main_py} 'hourly_inkbird_env_sensor_json' ${opt_config} ${opt_1hour_ago}",
-      "${exec_main_py} 'hourly_inkbird_env_sensor_csv'  ${opt_config} ${opt_1hour_ago}"
+      "${exec_main_py} 'hourly_inkbird_env_sensor_csv'  ${opt_config} ${opt_1hour_ago}",
+
+      "${exec_main_py} 'hourly_iphone_gps_json'         ${opt_config} ${opt_1hour_ago}",
+      "${exec_main_py} 'hourly_iphone_gps_csv'          ${opt_config} ${opt_1hour_ago}"
     ]
   },
   "cron_daily_job": {
@@ -83,6 +86,13 @@
       "${exec_main_py} 'daily_inkbird_env_sensor_percentile_csv'  ${opt_config} ${opt_yesterday}",
       "${exec_main_py} 'daily_inkbird_env_sensor_sample_csv_60'   ${opt_config} ${opt_yesterday}",
       "${exec_main_py} 'daily_inkbird_env_sensor_sample_csv_3600' ${opt_config} ${opt_yesterday}",
+
+      "${exec_main_py} 'daily_iphone_gps_json'                    ${opt_config} ${opt_yesterday}",
+      "${exec_main_py} 'daily_iphone_gps_csv'                     ${opt_config} ${opt_yesterday}",
+      "${exec_main_py} 'daily_iphone_gps_percentile_json'         ${opt_config} ${opt_yesterday}",
+      "${exec_main_py} 'daily_iphone_gps_percentile_csv'          ${opt_config} ${opt_yesterday}",
+      "${exec_main_py} 'daily_iphone_gps_sample_csv_60'           ${opt_config} ${opt_yesterday}",
+      "${exec_main_py} 'daily_iphone_gps_sample_csv_3600'         ${opt_config} ${opt_yesterday}",
 
       "for dst in ${rsync_daily_dst_arr} ;do rsync -av ${rsync_daily_src}/ ${dst}/ ;done"
     ]
@@ -151,11 +161,11 @@
     "run_key_list"    : ["dt", "yyyymmdd", "hostname", "mac_addr"],
     "sample_time_key" : "dt",
     "sample_begin"    : "${yyyymmdd}000000",
-    "sample_end"      : "${yyyymmdd}230000",
+    "sample_end"      : "${yyyymmdd}235959",
     "sample_interval" : 60,
     "input_file_list" : ["${default_daily_path}/all_json/${yyyymmdd}.json.gz"],
     "output_file"     : "${default_daily_path}/sample_csv_${sample_interval}/${yyyymmdd}.csv.gz"
-  }
+  },
   "daily_system_resource_sample_csv_3600": {
     "sensor"          : "system_resource",
     "program"         : "to_sample_csv",
@@ -166,9 +176,7 @@
     "sample_interval" : 3600,
     "input_file_list" : ["${default_daily_path}/all_json/${yyyymmdd}.json.gz"],
     "output_file"     : "${default_daily_path}/sample_csv_${sample_interval}/${yyyymmdd}.csv.gz"
-  }
-
-
+  },
 
   "raw_omron_env_sensor_json": {
     "sensor"          : "omron_env_sensor",
@@ -241,11 +249,11 @@
     "run_key_list"    : ["dt", "yyyymmdd", "hostname", "mac_addr", "sensor_mac_addr", "sensor_location"],
     "sample_time_key" : "dt",
     "sample_begin"    : "${yyyymmdd}000000",
-    "sample_end"      : "${yyyymmdd}230000",
+    "sample_end"      : "${yyyymmdd}235959",
     "sample_interval" : 60,
     "input_file_list" : ["${default_daily_path}/all_json/${yyyymmdd}.json.gz"],
     "output_file"     : "${default_daily_path}/sample_csv_${sample_interval}/${yyyymmdd}.csv.gz"
-  }
+  },
   "daily_omron_env_sensor_sample_csv_3600": {
     "sensor"          : "omron_env_sensor",
     "program"         : "to_sample_csv",
@@ -256,9 +264,7 @@
     "sample_interval" : 3600,
     "input_file_list" : ["${default_daily_path}/all_json/${yyyymmdd}.json.gz"],
     "output_file"     : "${default_daily_path}/sample_csv_${sample_interval}/${yyyymmdd}.csv.gz"
-  }
-
-
+  },
 
   "raw_inkbird_env_sensor_json": {
     "sensor"          : "inkbird_env_sensor",
@@ -323,18 +329,18 @@
     "run_key_list"    : ["percentile", "yyyymmdd", "hostname", "mac_addr", "sensor_mac_addr", "sensor_location"],
     "input_file_list" : ["${default_daily_path}/percentile_json/${yyyymmdd}.csv.gz"],
     "output_file"     : "${default_daily_path}/percentile_csv/${yyyymmdd}.csv.gz"
-  }
+  },
   "daily_inkbird_env_sensor_sample_csv_60": {
     "sensor"          : "inkbird_env_sensor",
     "program"         : "to_sample_csv",
     "run_key_list"    : ["dt", "yyyymmdd", "hostname", "mac_addr", "sensor_mac_addr", "sensor_location"],
     "sample_time_key" : "dt",
     "sample_begin"    : "${yyyymmdd}000000",
-    "sample_end"      : "${yyyymmdd}230000",
+    "sample_end"      : "${yyyymmdd}235959",
     "sample_interval" : 60,
     "input_file_list" : ["${default_daily_path}/all_json/${yyyymmdd}.json.gz"],
     "output_file"     : "${default_daily_path}/sample_csv_${sample_interval}/${yyyymmdd}.csv.gz"
-  }
+  },
   "daily_inkbird_env_sensor_sample_csv_3600": {
     "sensor"          : "inkbird_env_sensor",
     "program"         : "to_sample_csv",
@@ -346,8 +352,6 @@
     "input_file_list" : ["${default_daily_path}/all_json/${yyyymmdd}.json.gz"],
     "output_file"     : "${default_daily_path}/sample_csv_${sample_interval}/${yyyymmdd}.csv.gz"
   },
-
-
 
   "raw_iphone_gps_json": {
     "sensor"          : "icloud_gps",
@@ -393,5 +397,27 @@
     "run_key_list"    : ["dt", "hostname", "mac_addr", "extra.device"],
     "input_file_list" : ["${iphone_daily_path}/all_json/${yyyymmdd}.json.gz"],
     "output_file"     : "${iphone_daily_path}/all_csv/${yyyymmdd}.csv.gz"
+  },
+  "daily_iphone_gps_sample_csv_60": {
+    "sensor"          : "iphone_gps",
+    "program"         : "to_sample_csv",
+    "run_key_list"    : ["dt", "hostname", "mac_addr", "extra.device"],
+    "sample_time_key" : "dt",
+    "sample_begin"    : "${yyyymmdd}000000",
+    "sample_end"      : "${yyyymmdd}235959",
+    "sample_interval" : 60,
+    "input_file_list" : ["${default_daily_path}/all_json/${yyyymmdd}.json.gz"],
+    "output_file"     : "${default_daily_path}/sample_csv_${sample_interval}/${yyyymmdd}.csv.gz"
+  },
+  "daily_iphone_gps_sample_csv_3600": {
+    "sensor"          : "iphone_gps",
+    "program"         : "to_sample_csv",
+    "run_key_list"    : ["dt", "hostname", "mac_addr", "extra.device"],
+    "sample_time_key" : "dt",
+    "sample_begin"    : "${yyyymmdd}000000",
+    "sample_end"      : "${yyyymmdd}230000",
+    "sample_interval" : 3600,
+    "input_file_list" : ["${default_daily_path}/all_json/${yyyymmdd}.json.gz"],
+    "output_file"     : "${default_daily_path}/sample_csv_${sample_interval}/${yyyymmdd}.csv.gz"
   }
 }
