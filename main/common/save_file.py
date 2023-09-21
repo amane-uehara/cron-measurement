@@ -9,6 +9,10 @@ from uuid import getnode
 def save_file(text, config):
   filename = config["output_file"]
 
+  if config["dryrun"]:
+    print(text, file=sys.stdout)
+    return
+
   if filename == "${stdout}":
     print(text, file=sys.stdout)
     return

@@ -14,6 +14,7 @@ def read_arg():
   parser.add_argument("title", type=str)
   parser.add_argument("--yyyymmddhhmmss", type=str, default=now_yyyymmddhhmmss)
   parser.add_argument("--config", type=str, default=default_config_file)
+  parser.add_argument("--dryrun", action='store_true')
   args = parser.parse_args()
 
   ret = vars(args)
