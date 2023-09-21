@@ -1,29 +1,176 @@
 {
   "constant": {
-    "hostname"            : "foo.bar",
-    "output_root"         : "/foo/bar",
-    "omron_mac_addr"      : "C9:F4:80:00:00:00",
-    "omron_location"      : "here",
-    "inkbird_mac_addr"    : "49:23:0F:00:00:00",
-    "inkbird_location"    : "there",
-    "resource_raw_path"   : "${output_root}/raw/${hostname}/${sensor}/json/${yyyymmdd}",
-    "platform_raw_path"   : "${output_root}/raw/${hostname}/${sensor}/json/${yyyymmdd}",
-    "omron_raw_path"      : "/mnt/ramdisk/omron/${sensor_location}",
-    "inkbird_raw_path"    : "/mnt/ramdisk/inkbird/${sensor_location}",
-    "default_hourly_path" : "${output_root}/hourly/${hostname}/${sensor}",
-    "default_daily_path"  : "${output_root}/daily/${hostname}/${sensor}"
+    "hostname"            : "...",
+    "default_save_root"   : "/.../.../..."
+    "default_raw_root"    : "/.../.../..."
+
+    "default_hourly_path" : "${default_save_root}/hourly/${hostname}/${sensor}",
+    "default_daily_path"  : "${default_save_root}/daily/${hostname}/${sensor}",
+    "rsync_daily_src"     : "${default_save_root}/daily/${hostname}",
+    "rsync_daily_dst_arr" : "AAA:/AAA/AAA BBB:/BBB/BBB",
+
+    "resource_raw_path"   : "${default_raw_root}/resource",
+
+    "omron_raw_path"      : "${default_raw_root}/omron/${sensor_location}",
+    "omron_mac_addr"      : "??:??:??:??:??:??",
+    "omron_location"      : "...",
+
+    "inkbird_raw_path"    : "${default_raw_root}/inkbird/${sensor_location}",
+    "inkbird_mac_addr"    : "??:??:??:??:??:??",
+    "inkbird_location"    : "...",
+
+    "iphone_raw_path"     : "${default_raw_root}/iphone",
+    "iphone_apple_id"     : "...@...",
+    "iphone_password"     : "...",
+    "iphone_device"       : "...",
+    "iphone_cookie_directory" : "/.../.../...",
+
+    "exec_main_py"        : "/usr/bin/python3 ${repository_path}/main/main.py",
+    "opt_config"          : "--config /.../.../.../config.json",
+
+    "opt_now"             : "--yyyymmddhhmmss ${yyyymmddhhmmss}",
+    "opt_1hour_ago"       : "--yyyymmddhhmmss ${yyyymmddhh-1}0000",
+    "opt_today"           : "--yyyymmddhhmmss ${yyyymmddhh}000000",
+    "opt_yesterday"       : "--yyyymmddhhmmss ${yyyymmdd-1}000000"
   },
-  "raw_system_platform": {
-    "sensor"          : "system_platform",
+
+  "root_cron_hourly_drop_job": {
+    "sensor"          : "shell",
     "program"         : "fetch_raw_json",
-    "output_file"     : "${platform_raw_path}/${yyyymmddhhmmss}.json"
+    "command_list"    : [
+      "${exec_main_py} 'hourly_system_resource_remove'    ${opt_config}",
+      "${exec_main_py} 'hourly_omron_env_sensor_remove'   ${opt_config}",
+      "${exec_main_py} 'hourly_inkbird_env_sensor_remove' ${opt_config}",
+      "${exec_main_py} 'hourly_iphone_remove'             ${opt_config}"
+    ]
   },
-  "raw_system_resource": {
+
+  "cron_hourly_job": {
+    "sensor"          : "shell",
+    "program"         : "fetch_raw_json",
+    "command_list"    : [
+      "${exec_main_py} 'hourly_system_resource_json'    ${opt_config} ${opt_1hour_ago}",
+      "${exec_main_py} 'hourly_system_resource_csv'     ${opt_config} ${opt_1hour_ago}",
+
+      "${exec_main_py} 'hourly_omron_env_sensor_json'   ${opt_config} ${opt_1hour_ago}",
+      "${exec_main_py} 'hourly_omron_env_sensor_csv'    ${opt_config} ${opt_1hour_ago}",
+
+      "${exec_main_py} 'hourly_inkbird_env_sensor_json' ${opt_config} ${opt_1hour_ago}",
+      "${exec_main_py} 'hourly_inkbird_env_sensor_csv'  ${opt_config} ${opt_1hour_ago}"
+    ]
+  },
+  "cron_daily_job": {
+    "sensor"          : "shell",
+    "program"         : "fetch_raw_json",
+    "command_list"    : [
+      "${exec_main_py} 'daily_system_resource_json'               ${opt_config} ${opt_yesterday}",
+      "${exec_main_py} 'daily_system_resource_csv'                ${opt_config} ${opt_yesterday}",
+      "${exec_main_py} 'daily_system_resource_percentile_json'    ${opt_config} ${opt_yesterday}",
+      "${exec_main_py} 'daily_system_resource_percentile_csv'     ${opt_config} ${opt_yesterday}",
+      "${exec_main_py} 'daily_system_resource_sample_csv_60'      ${opt_config} ${opt_yesterday}",
+      "${exec_main_py} 'daily_system_resource_sample_csv_3600'    ${opt_config} ${opt_yesterday}",
+
+      "${exec_main_py} 'daily_omron_env_sensor_json'              ${opt_config} ${opt_yesterday}",
+      "${exec_main_py} 'daily_omron_env_sensor_csv'               ${opt_config} ${opt_yesterday}",
+      "${exec_main_py} 'daily_omron_env_sensor_percentile_json'   ${opt_config} ${opt_yesterday}",
+      "${exec_main_py} 'daily_omron_env_sensor_percentile_csv'    ${opt_config} ${opt_yesterday}",
+      "${exec_main_py} 'daily_omron_env_sensor_sample_csv_60'     ${opt_config} ${opt_yesterday}",
+      "${exec_main_py} 'daily_omron_env_sensor_sample_csv_3600'   ${opt_config} ${opt_yesterday}",
+
+      "${exec_main_py} 'daily_inkbird_env_sensor_json'            ${opt_config} ${opt_yesterday}",
+      "${exec_main_py} 'daily_inkbird_env_sensor_csv'             ${opt_config} ${opt_yesterday}",
+      "${exec_main_py} 'daily_inkbird_env_sensor_percentile_json' ${opt_config} ${opt_yesterday}",
+      "${exec_main_py} 'daily_inkbird_env_sensor_percentile_csv'  ${opt_config} ${opt_yesterday}",
+      "${exec_main_py} 'daily_inkbird_env_sensor_sample_csv_60'   ${opt_config} ${opt_yesterday}",
+      "${exec_main_py} 'daily_inkbird_env_sensor_sample_csv_3600' ${opt_config} ${opt_yesterday}",
+
+      "for dst in ${rsync_daily_dst_arr} ;do rsync -av ${rsync_daily_src}/ ${dst}/ ;done"
+    ]
+  },
+
+  "raw_system_resource_json": {
     "sensor"          : "system_resource",
     "program"         : "fetch_raw_json",
     "output_file"     : "${resource_raw_path}/${yyyymmddhhmmss}.json"
   },
-  "raw_omron_env_sensor": {
+  "hourly_system_resource_json": {
+    "sensor"          : "system_resource",
+    "program"         : "to_json_list",
+    "input_file_list" : ["${resource_raw_path}/${yyyymmddhh}*.json"],
+    "output_file"     : "${default_hourly_path}/json/${yyyymmddhh}.json.gz"
+  },
+  "hourly_system_resource_csv": {
+    "sensor"          : "system_resource",
+    "program"         : "to_csv",
+    "run_key_list"    : ["dt", "yyyymmdd", "hostname", "mac_addr"],
+    "input_file_list" : ["${default_hourly_path}/json/${yyyymmddhh}.json.gz"],
+    "output_file"     : "${default_hourly_path}/csv/${yyyymmddhh}.csv.gz"
+  },
+  "hourly_system_resource_remove": {
+    "sensor"          : "shell",
+    "program"         : "fetch_raw_json",
+    "command_list"    : [
+      "ls ${resource_raw_path} | wc -l",
+      "ls ${resource_raw_path}/${yyyymmddhh-4}*.json | wc -l",
+      "rm -rf ${resource_raw_path}/${yyyymmddhh-4}*.json",
+      "ls ${resource_raw_path} | wc -l"
+    ]
+  },
+  "daily_system_resource_json": {
+    "sensor"          : "system_resource",
+    "program"         : "to_json_list",
+    "input_file_list" : ["${default_hourly_path}/json/${yyyymmdd}*.json.gz"],
+    "output_file"     : "${default_daily_path}/all_json/${yyyymmdd}.json.gz"
+  },
+  "daily_system_resource_csv": {
+    "sensor"          : "system_resource",
+    "program"         : "to_csv",
+    "run_key_list"    : ["dt", "yyyymmdd", "hostname", "mac_addr"],
+    "input_file_list" : ["${default_daily_path}/all_json/${yyyymmdd}.json.gz"],
+    "output_file"     : "${default_daily_path}/all_csv/${yyyymmdd}.csv.gz"
+  },
+  "daily_system_resource_percentile_json": {
+    "sensor"          : "system_resource",
+    "program"         : "to_percentile_json_list",
+    "division_number" : 100,
+    "run_key_list"    : ["yyyymmdd", "hostname", "mac_addr"],
+    "input_file_list" : ["${default_daily_path}/all_json/${yyyymmdd}.json.gz"],
+    "output_file"     : "${default_daily_path}/percentile_json/${yyyymmdd}.csv.gz"
+  },
+  "daily_system_resource_percentile_csv": {
+    "sensor"          : "system_resource",
+    "program"         : "to_csv",
+    "division_number" : 100,
+    "run_key_list"    : ["percentile", "yyyymmdd", "hostname", "mac_addr"],
+    "input_file_list" : ["${default_daily_path}/percentile_json/${yyyymmdd}.csv.gz"],
+    "output_file"     : "${default_daily_path}/percentile_csv/${yyyymmdd}.csv.gz"
+  },
+  "daily_system_resource_sample_csv_60": {
+    "sensor"          : "system_resource",
+    "program"         : "to_sample_csv",
+    "run_key_list"    : ["dt", "yyyymmdd", "hostname", "mac_addr"],
+    "sample_time_key" : "dt",
+    "sample_begin"    : "${yyyymmdd}000000",
+    "sample_end"      : "${yyyymmdd}230000",
+    "sample_interval" : 60,
+    "input_file_list" : ["${default_daily_path}/all_json/${yyyymmdd}.json.gz"],
+    "output_file"     : "${default_daily_path}/sample_csv_${sample_interval}/${yyyymmdd}.csv.gz"
+  }
+  "daily_system_resource_sample_csv_3600": {
+    "sensor"          : "system_resource",
+    "program"         : "to_sample_csv",
+    "run_key_list"    : ["dt", "yyyymmdd", "hostname", "mac_addr"],
+    "sample_time_key" : "dt",
+    "sample_begin"    : "${yyyymmdd}000000",
+    "sample_end"      : "${yyyymmdd}230000",
+    "sample_interval" : 3600,
+    "input_file_list" : ["${default_daily_path}/all_json/${yyyymmdd}.json.gz"],
+    "output_file"     : "${default_daily_path}/sample_csv_${sample_interval}/${yyyymmdd}.csv.gz"
+  }
+
+
+
+  "raw_omron_env_sensor_json": {
     "sensor"          : "omron_env_sensor",
     "program"         : "fetch_raw_json",
     "output_file"     : "${omron_raw_path}/${yyyymmddhhmmss}.json",
@@ -32,7 +179,88 @@
     "bt_retry_count"  : 100,
     "bt_dev_id"       : 0
   },
-  "raw_inkbird_env_sensor": {
+  "hourly_omron_env_sensor_json": {
+    "sensor"          : "omron_env_sensor",
+    "program"         : "to_json_list",
+    "sensor_mac_addr" : "${omron_mac_addr}",
+    "sensor_location" : "${omron_location}",
+    "input_file_list" : ["${omron_raw_path}/${yyyymmddhh}*.json"],
+    "output_file"     : "${default_hourly_path}/json/${yyyymmddhh}.json.gz"
+  },
+  "hourly_omron_env_sensor_csv": {
+    "sensor"          : "omron_env_sensor",
+    "program"         : "to_csv",
+    "run_key_list"    : ["dt", "yyyymmdd", "hostname", "mac_addr", "sensor_mac_addr", "sensor_location"],
+    "input_file_list" : ["${default_hourly_path}/json/${yyyymmddhh}.json.gz"],
+    "output_file"     : "${default_hourly_path}/csv/${yyyymmddhh}.csv.gz"
+  },
+  "hourly_omron_env_sensor_remove": {
+    "sensor"          : "shell",
+    "program"         : "fetch_raw_json",
+    "sensor_mac_addr" : "${omron_mac_addr}",
+    "sensor_location" : "${omron_location}",
+    "command_list"    : [
+      "ls ${omron_raw_path} | wc -l",
+      "ls ${omron_raw_path}/${yyyymmddhh-4}*.json | wc -l",
+      "rm -rf ${omron_raw_path}/${yyyymmddhh-4}*.json",
+      "ls ${omron_raw_path} | wc -l"
+    ]
+  },
+  "daily_omron_env_sensor_json": {
+    "sensor"          : "omron_env_sensor",
+    "program"         : "to_json_list",
+    "input_file_list" : ["${default_hourly_path}/json/${yyyymmdd}*.json.gz"],
+    "output_file"     : "${default_daily_path}/all_json/${yyyymmdd}.json.gz"
+  },
+  "daily_omron_env_sensor_csv": {
+    "sensor"          : "omron_env_sensor",
+    "program"         : "to_csv",
+    "run_key_list"    : ["dt", "yyyymmdd", "hostname", "mac_addr", "sensor_mac_addr", "sensor_location"],
+    "input_file_list" : ["${default_daily_path}/all_json/${yyyymmdd}.json.gz"],
+    "output_file"     : "${default_daily_path}/all_csv/${yyyymmdd}.csv.gz"
+  },
+  "daily_omron_env_sensor_percentile_json": {
+    "sensor"          : "omron_env_sensor",
+    "program"         : "to_percentile_json_list",
+    "division_number" : 100,
+    "run_key_list"    : ["yyyymmdd", "hostname", "mac_addr", "sensor_mac_addr", "sensor_location"],
+    "input_file_list" : ["${default_daily_path}/all_json/${yyyymmdd}.json.gz"],
+    "output_file"     : "${default_daily_path}/percentile_json/${yyyymmdd}.csv.gz"
+  },
+  "daily_omron_env_sensor_percentile_csv": {
+    "sensor"          : "omron_env_sensor",
+    "program"         : "to_csv",
+    "division_number" : 100,
+    "run_key_list"    : ["percentile", "yyyymmdd", "hostname", "mac_addr", "sensor_mac_addr", "sensor_location"],
+    "input_file_list" : ["${default_daily_path}/percentile_json/${yyyymmdd}.csv.gz"],
+    "output_file"     : "${default_daily_path}/percentile_csv/${yyyymmdd}.csv.gz"
+  },
+  "daily_omron_env_sensor_sample_csv_60": {
+    "sensor"          : "omron_env_sensor",
+    "program"         : "to_sample_csv",
+    "run_key_list"    : ["dt", "yyyymmdd", "hostname", "mac_addr", "sensor_mac_addr", "sensor_location"],
+    "sample_time_key" : "dt",
+    "sample_begin"    : "${yyyymmdd}000000",
+    "sample_end"      : "${yyyymmdd}230000",
+    "sample_interval" : 60,
+    "input_file_list" : ["${default_daily_path}/all_json/${yyyymmdd}.json.gz"],
+    "output_file"     : "${default_daily_path}/sample_csv_${sample_interval}/${yyyymmdd}.csv.gz"
+  }
+  "daily_omron_env_sensor_sample_csv_3600": {
+    "sensor"          : "omron_env_sensor",
+    "program"         : "to_sample_csv",
+    "run_key_list"    : ["dt", "yyyymmdd", "hostname", "mac_addr", "sensor_mac_addr", "sensor_location"],
+    "sample_time_key" : "dt",
+    "sample_begin"    : "${yyyymmdd}000000",
+    "sample_end"      : "${yyyymmdd}230000",
+    "sample_interval" : 3600,
+    "input_file_list" : ["${default_daily_path}/all_json/${yyyymmdd}.json.gz"],
+    "output_file"     : "${default_daily_path}/sample_csv_${sample_interval}/${yyyymmdd}.csv.gz"
+  }
+
+
+
+  "raw_inkbird_env_sensor_json": {
     "sensor"          : "inkbird_env_sensor",
     "program"         : "fetch_raw_json",
     "output_file"     : "${inkbird_raw_path}/${yyyymmddhhmmss}.json",
@@ -40,17 +268,130 @@
     "sensor_location" : "${inkbird_location}",
     "bt_retry_count"  : 100
   },
-  "daily_json_system_resource": {
-    "sensor"          : "system_resource",
+  "hourly_inkbird_env_sensor_json": {
+    "sensor"          : "inkbird_env_sensor",
     "program"         : "to_json_list",
-    "input_file_list" : ["${resource_raw_path}/${yyyymmdd}*.json"],
-    "output_file"     : "${default_daily_path}/json/${yyyymmdd}.json.gz"
+    "sensor_mac_addr" : "${inkbird_mac_addr}",
+    "sensor_location" : "${inkbird_location}",
+    "input_file_list" : ["${inkbird_raw_path}/${yyyymmddhh}*.json"],
+    "output_file"     : "${default_hourly_path}/json/${yyyymmddhh}.json.gz"
   },
-  "daily_csv_system_resource": {
-    "sensor"          : "system_resource",
+  "hourly_inkbird_env_sensor_csv": {
+    "sensor"          : "inkbird_env_sensor",
     "program"         : "to_csv",
-    "run_key_list"    : ["dt", "hostname", "mac_addr"],
-    "input_file_list" : ["${resource_raw_path}/${yyyymmdd}*.json"],
-    "output_file"     : "${default_daily_path}/csv/${yyyymmdd}.csv.gz"
+    "run_key_list"    : ["dt", "yyyymmdd", "hostname", "mac_addr", "sensor_mac_addr", "sensor_location"],
+    "input_file_list" : ["${default_hourly_path}/json/${yyyymmddhh}.json.gz"],
+    "output_file"     : "${default_hourly_path}/csv/${yyyymmddhh}.csv.gz"
+  },
+  "hourly_inkbird_env_sensor_remove": {
+    "sensor"          : "shell",
+    "program"         : "fetch_raw_json",
+    "sensor_mac_addr" : "${inkbird_mac_addr}",
+    "sensor_location" : "${inkbird_location}",
+    "command_list"    : [
+      "ls ${inkbird_raw_path} | wc -l",
+      "ls ${inkbird_raw_path}/${yyyymmddhh-4}*.json | wc -l",
+      "rm -rf ${inkbird_raw_path}/${yyyymmddhh-4}*.json",
+      "ls ${inkbird_raw_path} | wc -l"
+    ]
+  },
+  "daily_inkbird_env_sensor_json": {
+    "sensor"          : "inkbird_env_sensor",
+    "program"         : "to_json_list",
+    "input_file_list" : ["${default_hourly_path}/json/${yyyymmdd}*.json.gz"],
+    "output_file"     : "${default_daily_path}/all_json/${yyyymmdd}.json.gz"
+  },
+  "daily_inkbird_env_sensor_csv": {
+    "sensor"          : "inkbird_env_sensor",
+    "program"         : "to_csv",
+    "run_key_list"    : ["dt", "yyyymmdd", "hostname", "mac_addr", "sensor_mac_addr", "sensor_location"],
+    "input_file_list" : ["${default_daily_path}/all_json/${yyyymmdd}.json.gz"],
+    "output_file"     : "${default_daily_path}/all_csv/${yyyymmdd}.csv.gz"
+  },
+  "daily_inkbird_env_sensor_percentile_json": {
+    "sensor"          : "inkbird_env_sensor",
+    "program"         : "to_percentile_json_list",
+    "division_number" : 100,
+    "run_key_list"    : ["yyyymmdd", "hostname", "mac_addr", "sensor_mac_addr", "sensor_location"],
+    "input_file_list" : ["${default_daily_path}/all_json/${yyyymmdd}.json.gz"],
+    "output_file"     : "${default_daily_path}/percentile_json/${yyyymmdd}.csv.gz"
+  },
+  "daily_inkbird_env_sensor_percentile_csv": {
+    "sensor"          : "inkbird_env_sensor",
+    "program"         : "to_csv",
+    "division_number" : 100,
+    "run_key_list"    : ["percentile", "yyyymmdd", "hostname", "mac_addr", "sensor_mac_addr", "sensor_location"],
+    "input_file_list" : ["${default_daily_path}/percentile_json/${yyyymmdd}.csv.gz"],
+    "output_file"     : "${default_daily_path}/percentile_csv/${yyyymmdd}.csv.gz"
+  }
+  "daily_inkbird_env_sensor_sample_csv_60": {
+    "sensor"          : "inkbird_env_sensor",
+    "program"         : "to_sample_csv",
+    "run_key_list"    : ["dt", "yyyymmdd", "hostname", "mac_addr", "sensor_mac_addr", "sensor_location"],
+    "sample_time_key" : "dt",
+    "sample_begin"    : "${yyyymmdd}000000",
+    "sample_end"      : "${yyyymmdd}230000",
+    "sample_interval" : 60,
+    "input_file_list" : ["${default_daily_path}/all_json/${yyyymmdd}.json.gz"],
+    "output_file"     : "${default_daily_path}/sample_csv_${sample_interval}/${yyyymmdd}.csv.gz"
+  }
+  "daily_inkbird_env_sensor_sample_csv_3600": {
+    "sensor"          : "inkbird_env_sensor",
+    "program"         : "to_sample_csv",
+    "run_key_list"    : ["dt", "yyyymmdd", "hostname", "mac_addr", "sensor_mac_addr", "sensor_location"],
+    "sample_time_key" : "dt",
+    "sample_begin"    : "${yyyymmdd}000000",
+    "sample_end"      : "${yyyymmdd}230000",
+    "sample_interval" : 3600,
+    "input_file_list" : ["${default_daily_path}/all_json/${yyyymmdd}.json.gz"],
+    "output_file"     : "${default_daily_path}/sample_csv_${sample_interval}/${yyyymmdd}.csv.gz"
+  },
+
+
+
+  "raw_iphone_gps_json": {
+    "sensor"          : "icloud_gps",
+    "program"         : "fetch_raw_json",
+    "extra"           : {"device": "${iphone_device}"},
+    "apple_id"        : "${iphone_apple_id}",
+    "password"        : "${iphone_password}",
+    "cookie_directory": "${iphone_cookie_directory}",
+    "output_file"     : "${iphone_raw_path}/${yyyymmddhhmmss}.json"
+  },
+  "hourly_iphone_gps_json": {
+    "sensor"          : "icloud_gps",
+    "program"         : "to_json_list",
+    "input_file_list" : ["${iphone_raw_path}/${yyyymmddhh}*.json"],
+    "output_file"     : "${iphone_hourly_path}/json/${yyyymmddhh}.json.gz"
+  },
+  "hourly_iphone_gps_csv": {
+    "sensor"          : "icloud_gps",
+    "program"         : "to_csv",
+    "run_key_list"    : ["dt", "hostname", "mac_addr", "extra.device"],
+    "input_file_list" : ["${iphone_hourly_path}/json/${yyyymmddhh}.json.gz"],
+    "output_file"     : "${iphone_hourly_path}/csv/${yyyymmddhh}.csv.gz"
+  },
+  "hourly_iphone_gps_remove": {
+    "sensor"          : "shell",
+    "program"         : "fetch_raw_json",
+    "command_list"    : [
+      "ls ${iphone_raw_path} | wc -l",
+      "ls ${iphone_raw_path}/${yyyymmddhh-4}*.json | wc -l",
+      "rm -rf ${iphone_raw_path}/${yyyymmddhh-4}*.json",
+      "ls ${iphone_raw_path} | wc -l"
+    ]
+  },
+  "daily_iphone_gps_json": {
+    "sensor"          : "icloud_gps",
+    "program"         : "to_json_list",
+    "input_file_list" : ["${iphone_hourly_path}/json/${yyyymmdd}*.json.gz"],
+    "output_file"     : "${iphone_daily_path}/all_json/${yyyymmdd}.json.gz"
+  },
+  "daily_iphone_gps_csv": {
+    "sensor"          : "icloud_gps",
+    "program"         : "to_csv",
+    "run_key_list"    : ["dt", "hostname", "mac_addr", "extra.device"],
+    "input_file_list" : ["${iphone_daily_path}/all_json/${yyyymmdd}.json.gz"],
+    "output_file"     : "${iphone_daily_path}/all_csv/${yyyymmdd}.csv.gz"
   }
 }
