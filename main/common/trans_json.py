@@ -7,12 +7,16 @@ def search_read(key_str, data_dict):
   key_list = key_str.split(".")
   key = key_list.pop(0)
 
-  if key not in data_dict:
+  if not isinstance(data_dict, dict):
+    return ""
+  elif key not in data_dict:
     return ""
   elif len(key_list) == 0:
     return data_dict[key]
   elif len(key_list) >= 1:
     return search_read(".".join(key_list), data_dict[key])
+  else:
+    return ""
 
 def search_write(key_str, value, data_dict):
   if not isinstance(data_dict, dict):
