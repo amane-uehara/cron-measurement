@@ -1,6 +1,7 @@
 import sys
 import json
 from math import floor
+from datetime import datetime, timedelta
 
 def search_read(key_str, data_dict):
   key_list = key_str.split(".")
@@ -68,6 +69,42 @@ def trans_to_selected_json_list(json_list, config):
       tmp[output_key] = search_read(input_key, run)
     ret.append(tmp)
 
+  return ret
+
+def trans_to_sample_json_list(json_list, config):
+  if not "sample_time_key" in config:
+    print("ERROR: sample_time_key not found", file=sys.stderr)
+    sys.exit(1)
+  time_key = config["sample_time_key"]
+
+  if not "sample_begin" in config:
+    print("ERROR: sample_begin (yyyymmddhhmmss) not found", file=sys.stderr)
+    sys.exit(1)
+  sample_begin = datetime.strptime(config["sample_begin"], "%Y%m%d%H%M%S")
+
+  if not "sample_end" in config:
+    print("ERROR: sample_end (yyyymmddhhmmss) not found", file=sys.stderr)
+    sys.exit(1)
+  sample_end = datetime.strptime(config["sample_end"], "%Y%m%d%H%M%S")
+
+  if not "sample_interval" in config:
+    print("ERROR: sample_interval (sec) not found", file=sys.stderr)
+    sys.exit(1)
+  sample_interval = timedelta(seconds=int(config["sample_interval"]))
+
+  ret = []
+  json_list.sort(key=lambda x: x[time_key])
+
+  sample_time = sample_begin
+  while sample_time <= sample_end:
+    index = 0
+    for index, run in enumerate(json_list):
+      if datetime.strptime(run[time_key], "%Y%m%d%H%M%S") < sample_time : continue
+      ret.append(run)
+      break
+    json_list = json_list[index:-1]
+
+    sample_time += sample_interval
   return ret
 
 def trans_to_percentile_json_list(json_list, config, default_data_key_list):

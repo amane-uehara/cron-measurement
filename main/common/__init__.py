@@ -8,6 +8,7 @@ from common.read_json_files  import fetch_json_list
 
 from common.trans_json       import trans_to_list_list
 from common.trans_json       import trans_to_selected_json_list
+from common.trans_json       import trans_to_sample_json_list
 from common.trans_json       import trans_to_percentile_json_list
 
 from common.save_file        import save_raw_data
