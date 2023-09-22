@@ -17,7 +17,8 @@ def main():
 
   if program == "fetch_raw_json":
     data = sensor["fetch_json"](config)
-    save_raw_data(data, config)
+    run = add_runtime_info(data, config)
+    save_json_file(run, config)
 
   else:
     json_list = fetch_json_list(config)

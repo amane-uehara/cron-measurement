@@ -36,7 +36,7 @@ def save_file(text: str, config: Dict[str, Any]) -> None:
       print("INFO: text file saved: " + filename, file=sys.stderr)
   print("INFO: saved file size: " + str(os.path.getsize(filename)), file=sys.stderr)
 
-def save_raw_data(data: Any, config: Dict[str, Any]) -> None:
+def add_runtime_info(data: Any, config: Dict[str, Any]) -> Dict[str, Any]:
   run = {}
   run["dt"]       = config["yyyymmddhhmmss"]
   run["yyyymmdd"] = config["yyyymmdd"]
@@ -47,7 +47,7 @@ def save_raw_data(data: Any, config: Dict[str, Any]) -> None:
     run["extra"] = config["extra"]
 
   run["data"] = data
-  save_json_file(run, config)
+  return run
 
 def save_json_file(
   json_list: Union[Dict[str, Any], List[Dict[str, Any]]],

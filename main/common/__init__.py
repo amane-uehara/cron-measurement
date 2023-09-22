@@ -11,6 +11,6 @@ from common.trans_json       import trans_to_selected_json_list
 from common.trans_json       import trans_to_sample_json_list
 from common.trans_json       import trans_to_percentile_json_list
 
-from common.save_file        import save_raw_data
+from common.save_file        import add_runtime_info
 from common.save_file        import save_json_file
 from common.save_file        import save_csv_file
