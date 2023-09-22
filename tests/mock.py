@@ -13,7 +13,7 @@ def mock_config():
       }
     },
     "run_key_list": ["dt", "extra.extra_str"],
-    "data_key_list": ["key_dict.key2.key2_1.key2_1_0"]
+    "data_key_list": ["key_int_0", "key_dict.key2.key2_1.key2_1_0"]
   }
 
 def mock_raw_data_0():
@@ -206,15 +206,66 @@ def mock_csv_list_default_key():
     ]
   ]
 
+def mock_csv_list_config_0():
+  return [
+    "20220304050607",
+    "extra_val",
+    0,
+    210
+  ]
+
+def mock_csv_list_config_1():
+  return [
+    "20220304050607",
+    "extra_val",
+    "",
+    450
+  ]
+
 def mock_csv_list_config_key():
   return [
-    [
-      "20220304050607",
-      "extra_val",
-      210
-    ],[
-      "20220304050607",
-      "extra_val",
-      450
-    ]
+    mock_csv_list_config_0(),
+    mock_csv_list_config_1(),
+  ]
+
+def mock_select_list_config_0():
+  return {
+    "dt": "20220304050607",
+    "extra": {
+      "extra_str": "extra_val"
+    },
+    "data": {
+      "key_int_0": 0,
+      "key_dict": {
+        "key2": {
+          "key2_1": {
+            "key2_1_0": 210
+          }
+        }
+      }
+    }
+  }
+
+def mock_select_list_config_1():
+  return {
+    "dt": "20220304050607",
+    "extra": {
+      "extra_str": "extra_val"
+    },
+    "data": {
+      "key_int_0": "",
+      "key_dict": {
+        "key2": {
+          "key2_1": {
+            "key2_1_0": 450
+          }
+        }
+      }
+    }
+  }
+
+def mock_select_list_config_key():
+  return [
+    mock_select_list_config_0(),
+    mock_select_list_config_1(),
   ]
