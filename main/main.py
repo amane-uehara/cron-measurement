@@ -20,7 +20,7 @@ def main():
     save_raw_data(data, config)
 
   else:
-    json_list: = fetch_json_list(config)
+    json_list = fetch_json_list(config)
 
     if program == "to_json_list":
       save_json_file(json_list, config)
