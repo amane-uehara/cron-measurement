@@ -53,11 +53,8 @@ def default_run_key_list() -> List[str]:
   return [
     "dt",
     "yyyymmdd",
-    "hh",
     "hostname",
-    "mac_addr",
-    "sensor_mac_addr",
-    "sensor_location"
+    "mac_addr"
   ]
 
 def trans_to_list_list(
