@@ -1,16 +1,17 @@
+from typing import List, Dict, Union, Any
 import os
 import sys
 from importlib import import_module
 from glob import glob
 
-def fetch_sensor_name_list():
+def fetch_sensor_name_list() -> List[str]:
   main_path   = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
   sensor_path = os.path.join(main_path, "sensor", "*.py")
   sensor_file_list = glob(sensor_path)
   sensor_name_list = list(map(lambda x: str(os.path.basename(x))[:-3], sensor_file_list))
   return sensor_name_list
 
-def import_sensor(sensor_name):
+def import_sensor(sensor_name: str) -> Dict[str, Any]:
   ret = {}
   sensor_name_list = fetch_sensor_name_list()
   if not sensor_name in sensor_name_list:

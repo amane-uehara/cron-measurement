@@ -1,10 +1,11 @@
+from typing import List, Dict, Union, Any
 import os
 import sys
 import argparse
 import json
 from datetime import datetime
 
-def read_arg():
+def read_arg() -> Dict[str, Any]:
   now_yyyymmddhhmmss  = datetime.now().strftime("%Y%m%d%H%M%S")
 
   repository_path = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))

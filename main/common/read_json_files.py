@@ -1,9 +1,10 @@
+from typing import List, Dict, Union, Tuple, Any
 import sys
 import json
 import gzip
 from glob import glob
 
-def fetch_json_list(config):
+def fetch_json_list(config: Dict[str, Any]) -> List[Dict[str, Any]]:
   input_file_list = fetch_filelist(config["input_file_list"])
   print("INFO: input file list[0]:  " + input_file_list[0], file=sys.stderr)
   print("INFO: input file list[-1]: " + input_file_list[-1], file=sys.stderr)
@@ -33,22 +34,27 @@ def fetch_json_list(config):
 
   return sorted_list
 
-def fetch_filelist(glob_filelist):
+def fetch_filelist(glob_filelist: List[str]) -> List[str]:
   ret = []
   for glob_file in glob_filelist:
     ret += glob(glob_file)
   ret.sort()
   return ret
 
-def custom_sort(item):
+def custom_sort(item: Dict[str, Any]) -> Tuple[str, str, int]:
   if "dt" in item:
     dt = item["dt"]
   else:
     dt = ""
 
-  if "mac_addr" in item:
-    mac_addr = item["mac_addr"]
+  if "yyyymmdd" in item:
+    yyyymmdd = item["yyyymmdd"]
   else:
-    mac_addr = ""
+    yyyymmdd = ""
 
-  return (dt, mac_addr)
+  if "percentile" in item:
+    percentile = item["percentile"]
+  else:
+    percentile = -1
+
+  return (dt, yyyymmdd, percentile)

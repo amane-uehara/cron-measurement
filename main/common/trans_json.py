@@ -1,24 +1,38 @@
+from typing import List, Dict, Union, Any
 import sys
 import json
 from math import floor
 from datetime import datetime, timedelta
 
-def search_read(key_str, data_dict):
+def search_read(
+  key_str:   str,
+  data_dict: Dict[str, Any]
+) -> Dict[str, Any]:
+
   key_list = key_str.split(".")
   key = key_list.pop(0)
 
   if not isinstance(data_dict, dict):
-    return ""
-  elif key not in data_dict:
-    return ""
-  elif len(key_list) == 0:
-    return data_dict[key]
-  elif len(key_list) >= 1:
-    return search_read(".".join(key_list), data_dict[key])
-  else:
-    return ""
+    return {}
 
-def search_write(key_str, value, data_dict):
+  if key not in data_dict:
+    return {}
+
+  if len(key_list) == 0:
+    value = data_dict[key]
+    return {"": data_dict[key]}
+
+  if len(key_list) >= 1:
+    return search_read(".".join(key_list), data_dict[key])
+
+  return {}
+
+def search_write(
+  key_str:   str,
+  value:     Any,
+  data_dict: Dict[str, Any]
+) -> Dict[str, Any]:
+
   if not isinstance(data_dict, dict):
     return {}
 
@@ -35,7 +49,7 @@ def search_write(key_str, value, data_dict):
   tmp[key_list[0]] = value
   return ret
 
-def default_run_key_list():
+def default_run_key_list() -> List[str]:
   return [
     "dt",
     "yyyymmdd",
@@ -46,19 +60,36 @@ def default_run_key_list():
     "sensor_location"
   ]
 
-def trans_to_list_list(json_list, config, default_data_key_list):
+def trans_to_list_list(
+  json_list: List[Dict[str, Any]],
+  config: Dict[str, Any],
+  default_data_key_list: List[str]
+) -> List[List[Union[None, str, int, float, bool]]]:
+
   key_list = join_run_data_key_list(default_run_key_list(), default_data_key_list, config)
 
   ret = []
   for run in json_list:
-    tmp = []
+    tmp: List[Union[None, str, int, float, bool]] = []
     for dot_key in key_list:
-      tmp.append(search_read(dot_key, run))
+      value_dict = search_read(dot_key, run)
+      if not "" in value_dict:
+        tmp.append("")
+      else:
+        value = value_dict[""]
+        if isinstance(value, str) or isinstance(value, int) or isinstance(value, float) or isinstance(value, bool):
+          tmp.append(value)
+        else:
+          tmp.append("")
     ret.append(tmp)
 
   return ret
 
-def trans_to_selected_json_list(json_list, config):
+def trans_to_selected_json_list(
+  json_list: List[Dict[str, Any]],
+  config: Dict[str, Any]
+) -> List[Dict[str, Any]]:
+
   if "key_dict" in config:
     key_dict = config["key_dict"]
   else:
@@ -75,7 +106,11 @@ def trans_to_selected_json_list(json_list, config):
 
   return ret
 
-def trans_to_sample_json_list(json_list, config):
+def trans_to_sample_json_list(
+  json_list: List[Dict[str, Any]],
+  config: Dict[str, Any]
+) -> List[Dict[str, Any]]:
+
   if not "sample_time_key" in config:
     print("ERROR: sample_time_key not found", file=sys.stderr)
     sys.exit(1)
@@ -111,7 +146,12 @@ def trans_to_sample_json_list(json_list, config):
     sample_time += sample_interval
   return ret
 
-def trans_to_percentile_json_list(json_list, config, default_data_key_list):
+def trans_to_percentile_json_list(
+  json_list: List[Dict[str, Any]],
+  config: Dict[str, Any],
+  default_data_key_list: List[str]
+) -> List[Dict[str, Any]]:
+
   if len(json_list) == 0:
     return []
 
@@ -123,7 +163,7 @@ def trans_to_percentile_json_list(json_list, config, default_data_key_list):
   key_list = join_run_data_key_list(default_run_key_list(), default_data_key_list, config)
 
   if "percentile" in key_list:
-    del key_list["percentile"]
+    key_list.remove("percentile")
 
   ret = []
   for i in range(div):
@@ -138,14 +178,19 @@ def trans_to_percentile_json_list(json_list, config, default_data_key_list):
 
     for i in range(div):
       if len(tmp) == 0:
-        ret[i] = ""
+        ret[i] = {}
       else:
         index = int((len(tmp)-1)*i/div)
         value = tmp[index]
         ret[i] = search_write(key, value, ret[i])
   return ret
 
-def join_run_data_key_list(default_run_key_list, default_data_key_list, config):
+def join_run_data_key_list(
+  default_run_key_list:  List[str],
+  default_data_key_list: List[str],
+  config: Dict[str, Any]
+) -> List[str]:
+
   if "run_key_list"  in config: run_key_list  = config["run_key_list"]
   else:                         run_key_list  = default_run_key_list
   if "data_key_list" in config: data_key_list = config["data_key_list"]

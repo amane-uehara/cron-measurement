@@ -1,3 +1,4 @@
+from typing import List, Dict, Union, Any
 import os
 import sys
 import json
@@ -6,7 +7,7 @@ import gzip
 from datetime import datetime
 from uuid import getnode
 
-def save_file(text, config):
+def save_file(text: str, config: Dict[str, Any]) -> None:
   filename = config["output_file"]
 
   if config["dryrun"]:
@@ -35,7 +36,7 @@ def save_file(text, config):
       print("INFO: text file saved: " + filename, file=sys.stderr)
   print("INFO: saved file size: " + str(os.path.getsize(filename)), file=sys.stderr)
 
-def save_raw_data(data, config):
+def save_raw_data(data: Any, config: Dict[str, Any]) -> None:
   run = {}
   run["dt"]       = config["yyyymmddhhmmss"]
   run["yyyymmdd"] = config["yyyymmdd"]
@@ -48,10 +49,16 @@ def save_raw_data(data, config):
   run["data"] = data
   save_json_file(run, config)
 
-def save_json_file(json_list, config):
+def save_json_file(
+  json_list: Union[Dict[str, Any], List[Dict[str, Any]]],
+  config: Dict[str, Any]
+) -> None:
   text = json.dumps(json_list, separators=(',',':'))
   save_file(text, config)
 
-def save_csv_file(list_list, config):
+def save_csv_file(
+  list_list: List[List[Union[None,str,int,float,bool]]],
+  config: Dict[str,Any]
+) -> None:
   text = str(json.dumps(list_list, separators=(',',':')).replace("],[", "\n").lstrip("[[")).rstrip("\n").rstrip("]]")
   save_file(text, config)
