@@ -41,7 +41,7 @@ def save_raw_data(data: Any, config: Dict[str, Any]) -> None:
   run["dt"]       = config["yyyymmddhhmmss"]
   run["yyyymmdd"] = config["yyyymmdd"]
   run["hostname"] = config["hostname"]
-  run["mac_addr"] = hex(getnode())[2:]
+  run["mac_addr"] = config["mac_addr"]
 
   if "extra" in config:
     run["extra"] = config["extra"]

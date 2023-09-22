@@ -4,6 +4,7 @@ import json
 import re
 from datetime import datetime, timedelta
 from pathlib import Path
+from uuid import getnode
 
 def read_config_file(arg_dict: Dict[str, Union[int,str]]) -> Dict[str, Any]:
   with open(arg_dict["config_abspath"]) as f:
@@ -37,6 +38,8 @@ def read_config_file(arg_dict: Dict[str, Union[int,str]]) -> Dict[str, Any]:
 
   if arg_dict["dryrun"] :
     target["fork_main_py"] += " --dryrun"
+
+  target["mac_addr"] = hex(getnode())[2:]
 
   target = replace_self(target)
   target = replace_config_shift_time(target, str(arg_dict["yyyymmddhhmmss"]))
