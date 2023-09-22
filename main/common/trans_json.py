@@ -13,10 +13,10 @@ def search_read(
   key = key_list.pop(0)
 
   if not isinstance(data_dict, dict):
-    return {"": None}
+    return {"": ""}
 
   if key not in data_dict:
-    return {"": None}
+    return {"": ""}
 
   if len(key_list) == 0:
     value = data_dict[key]
@@ -25,7 +25,7 @@ def search_read(
   if len(key_list) >= 1:
     return search_read(".".join(key_list), data_dict[key])
 
-  return {"": None}
+  return {"": ""}
 
 def search_write(
   key_str:   str,
