@@ -13,10 +13,10 @@ def search_read(
   key = key_list.pop(0)
 
   if not isinstance(data_dict, dict):
-    return {}
+    return {"": None}
 
   if key not in data_dict:
-    return {}
+    return {"": None}
 
   if len(key_list) == 0:
     value = data_dict[key]
@@ -25,7 +25,7 @@ def search_read(
   if len(key_list) >= 1:
     return search_read(".".join(key_list), data_dict[key])
 
-  return {}
+  return {"": None}
 
 def search_write(
   key_str:   str,
@@ -73,14 +73,11 @@ def trans_to_list_list(
     tmp: List[Union[None, str, int, float, bool]] = []
     for dot_key in key_list:
       value_dict = search_read(dot_key, run)
-      if not "" in value_dict:
-        tmp.append("")
+      value = value_dict[""]
+      if isinstance(value, str) or isinstance(value, int) or isinstance(value, float) or isinstance(value, bool):
+        tmp.append(value)
       else:
-        value = value_dict[""]
-        if isinstance(value, str) or isinstance(value, int) or isinstance(value, float) or isinstance(value, bool):
-          tmp.append(value)
-        else:
-          tmp.append("")
+        tmp.append("")
     ret.append(tmp)
 
   return ret
@@ -101,7 +98,8 @@ def trans_to_selected_json_list(
   for run in json_list:
     tmp = {}
     for input_key, output_key in key_dict.items():
-      tmp[output_key] = search_read(input_key, run)
+       value_dict = search_read(input_key, run)
+       tmp["output_key"] = value_dict[""]
     ret.append(tmp)
 
   return ret
@@ -172,7 +170,8 @@ def trans_to_percentile_json_list(
   for key in key_list:
     tmp = []
     for run in json_list:
-      tmp.append(search_read(key, run))
+      value_dict = search_read(key, run)
+      tmp.append(value_dict[""])
     tmp = list(filter(lambda x: x != "", tmp))
     tmp.sort()
 
