@@ -4,10 +4,13 @@ import json
 from common import *
 
 def main():
-  arg_dict: Dict[str, Any] = read_arg()
-  config:   Dict[str, Any] = read_config_file(arg_dict)
-  sensor:   Dict[str, Any] = import_sensor(config["sensor"])
-  program:  str            = config["program"]
+  domain:  Dict[str, str] = read_domain()
+  arg:     Dict[str, str] = read_arg(domain)
+  check_arg(arg)
+
+  config:  Dict[str, Any] = read_config_file(arg)
+  sensor:  Dict[str, Any] = import_sensor(config["sensor"])
+  program: str            = config["program"]
 
   data:               Dict[str, Any]
   json_list:          List[Dict[str, Any]]

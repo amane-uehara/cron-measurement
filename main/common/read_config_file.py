@@ -4,24 +4,23 @@ import json
 import re
 from datetime import datetime, timedelta
 from pathlib import Path
-from uuid import getnode
 
-def read_config_file(arg_dict: Dict[str, Union[int,str]]) -> Dict[str, Any]:
-  with open(arg_dict["config_abspath"]) as f:
+def read_config_file(arg: Dict[str, str]) -> Dict[str, Any]:
+  with open(arg["config_abspath"]) as f:
     try:
       config_all = json.load(f)
     except FileNotFoundError as err:
-      print("ERROR: config file: `" + str(arg_dict["config_abspath"]) + "` not found", file=sys.stderr)
+      print("ERROR: config file: `" + arg["config_abspath"] + "` not found", file=sys.stderr)
       sys.exit(1)
 
-  title = str(arg_dict["title"])
+  title = arg["title"]
   if not title in config_all:
     print("ERROR: invalid title: " + title, file=sys.stderr)
     sys.exit(1)
 
   target    = config_all[title].copy()
   constant  = config_all["constant"].copy()
-  time_dict = create_time_dict(str(arg_dict["yyyymmddhhmmss"]))
+  time_dict = create_time_dict(arg["yyyymmddhhmmss"])
 
   for kc, vc in constant.items():
     if not kc in target:
@@ -30,19 +29,19 @@ def read_config_file(arg_dict: Dict[str, Union[int,str]]) -> Dict[str, Any]:
   for kc, vc in time_dict.items():
     target[kc] = vc
 
-  target["repository_path"] = str(arg_dict["repository_path"])
-  target["dryrun"] = str(arg_dict["dryrun"])
+  target["repository_path"] = arg["repository_path"]
+  target["dryrun"] = arg["dryrun"]
 
-  target["fork_main_py"] = str(arg_dict["exec_main_py"])
-  target["fork_main_py"] += " --config " + str(arg_dict["config_abspath"])
+  target["fork_main_py"] = arg["exec_main_py"]
+  target["fork_main_py"] += " --config " + arg["config_abspath"]
 
-  if arg_dict["dryrun"] :
+  if arg["dryrun"] == "True":
     target["fork_main_py"] += " --dryrun"
 
-  target["mac_addr"] = hex(getnode())[2:]
+  target["mac_addr"] = arg["mac_addr"]
 
   target = replace_self(target)
-  target = replace_config_shift_time(target, str(arg_dict["yyyymmddhhmmss"]))
+  target = replace_config_shift_time(target, arg["yyyymmddhhmmss"])
   ret = format_config(target)
 
   print("INFO: config: " + json.dumps(ret, indent=2), file=sys.stderr)
