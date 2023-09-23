@@ -3,7 +3,7 @@ import sys
 
 sys.path.append('../main/')
 from common import *
-from mock import *
+from mock_sensor_data import *
 
 class TestMain(unittest.TestCase):
 
