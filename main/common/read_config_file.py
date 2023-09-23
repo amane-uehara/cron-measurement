@@ -8,18 +8,24 @@ from pathlib import Path
 def read_config_file(arg: Dict[str, str]) -> Dict[str, Any]:
   with open(arg["config_abspath"]) as f:
     try:
-      config_all = json.load(f)
+      raw_config = json.load(f)
     except FileNotFoundError as err:
       print("ERROR: config file: `" + arg["config_abspath"] + "` not found", file=sys.stderr)
       sys.exit(1)
+  return raw_config
+
+def join_arg_config(
+  arg: Dict[str, str],
+  raw_config: Dict[str, Any]
+) -> Dict[str, Any]:
 
   title = arg["title"]
-  if not title in config_all:
+  if not title in raw_config:
     print("ERROR: invalid title: " + title, file=sys.stderr)
     sys.exit(1)
 
-  target    = config_all[title].copy()
-  constant  = config_all["constant"].copy()
+  target    = raw_config[title].copy()
+  constant  = raw_config["constant"].copy()
   time_dict = create_time_dict(arg["yyyymmddhhmmss"])
 
   for kc, vc in constant.items():

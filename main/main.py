@@ -8,9 +8,10 @@ def main():
   arg:     Dict[str, str] = read_arg(domain)
   check_arg(arg)
 
-  config:  Dict[str, Any] = read_config_file(arg)
-  sensor:  Dict[str, Any] = import_sensor(config["sensor"])
-  program: str            = config["program"]
+  raw_config: Dict[str, Any] = read_config_file(arg)
+  config:     Dict[str, Any] = join_arg_config(arg, raw_config)
+  sensor:     Dict[str, Any] = import_sensor(config["sensor"])
+  program:    str            = config["program"]
 
   data:               Dict[str, Any]
   json_list:          List[Dict[str, Any]]
