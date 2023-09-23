@@ -37,21 +37,21 @@ class TestMain(unittest.TestCase):
     json_list[8]["data"]["key_int_0"] = 7
     json_list[9]["data"]["key_int_0"] = 9
 
-    expected  = trans_to_percentile_json_list(json_list, config, sensor["key_list"])
+    actual = trans_to_percentile_json_list(json_list, config, sensor["key_list"])
 
-    actual = [
+    expected = [
       {"percentile": 0},
       {"percentile": 1},
       {"percentile": 2}
     ]
 
-    actual[0].update(mock_select_list_config_0())
-    actual[1].update(mock_select_list_config_0())
-    actual[2].update(mock_select_list_config_0())
+    expected[0].update(mock_select_list_config_0())
+    expected[1].update(mock_select_list_config_0())
+    expected[2].update(mock_select_list_config_0())
 
-    actual[0]["data"]["key_int_0"] = 0
-    actual[1]["data"]["key_int_0"] = 3
-    actual[2]["data"]["key_int_0"] = 6
+    expected[0]["data"]["key_int_0"] = 0
+    expected[1]["data"]["key_int_0"] = 3
+    expected[2]["data"]["key_int_0"] = 6
 
     self.assertEqual(expected, actual)
 

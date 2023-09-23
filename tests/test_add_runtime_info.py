@@ -11,16 +11,16 @@ class TestMain(unittest.TestCase):
     sensor = mock_import_sensor()
     config = mock_config()
     data = sensor["fetch_json"]({"mock_type":0})
-    expected = add_runtime_info(data, config)
-    actual = mock_run_data_0()
+    actual = add_runtime_info(data, config)
+    expected = mock_run_data_0()
     self.assertEqual(expected, actual)
 
   def test_add_runtime_info_1(self):
     sensor = mock_import_sensor()
     config = mock_config()
     data = sensor["fetch_json"]({"mock_type":1})
-    expected = add_runtime_info(data, config)
-    actual = mock_run_data_1()
+    actual = add_runtime_info(data, config)
+    expected = mock_run_data_1()
     self.assertEqual(expected, actual)
 
 if __name__ == '__main__':

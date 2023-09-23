@@ -8,12 +8,12 @@ from mock_sensor_data import *
 class TestMain(unittest.TestCase):
 
   def test_trans_to_sample_json_list(self):
-    sensor    = mock_import_sensor()
+    sensor = mock_import_sensor()
 
-    config    = mock_config()
+    config = mock_config()
     config["sample_time_key"] = "dt"
-    config["sample_begin"] = "20221229000000"
-    config["sample_end"]   = "20221229030000"
+    config["sample_begin"]    = "20221229000000"
+    config["sample_end"]      = "20221229030000"
     config["sample_interval"] = "3600"
 
     json_list = [
@@ -40,17 +40,17 @@ class TestMain(unittest.TestCase):
     json_list[8]["dt"] = "20221229030000"
     json_list[9]["dt"] = "20221229030100"
 
-    expected  = trans_to_sample_json_list(json_list, config)
+    actual = trans_to_sample_json_list(json_list, config)
 
-    actual = [
+    expected = [
       mock_run_data_0(),
       mock_run_data_0(),
       mock_run_data_1()
     ]
 
-    actual[0]["dt"] = "20221229000000"
-    actual[1]["dt"] = "20221229010000"
-    actual[2]["dt"] = "20221229020000"
+    expected[0]["dt"] = "20221229000000"
+    expected[1]["dt"] = "20221229010000"
+    expected[2]["dt"] = "20221229020000"
 
     self.assertEqual(expected, actual)
 
