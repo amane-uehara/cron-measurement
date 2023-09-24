@@ -114,7 +114,7 @@ def trans_to_sample_json_list(
   if not "sample_begin" in config:
     print("ERROR: sample_begin (yyyymmddhhmmss) not found", file=sys.stderr)
     sys.exit(1)
-  sample_begin = datetime.strptime(config["sample_begin"], "%Y%m%d%H%M%S")
+  sample_time = datetime.strptime(config["sample_begin"], "%Y%m%d%H%M%S")
 
   if not "sample_end" in config:
     print("ERROR: sample_end (yyyymmddhhmmss) not found", file=sys.stderr)
@@ -129,16 +129,13 @@ def trans_to_sample_json_list(
   ret = []
   json_list.sort(key=lambda x: x[time_key])
 
-  sample_time = sample_begin
-  while sample_time <= sample_end:
-    index = 0
-    for index, run in enumerate(json_list):
-      if datetime.strptime(run[time_key], "%Y%m%d%H%M%S") < sample_time : continue
-      ret.append(run)
-      break
-    json_list = json_list[index:-1]
+  for run in json_list:
+    run_time = datetime.strptime(run[time_key], "%Y%m%d%H%M%S")
+    if sample_time <= run_time and run_time < sample_time + sample_interval:
+      ret.append(run.copy())
+      sample_time += sample_interval
+    if sample_end <= sample_time: break
 
-    sample_time += sample_interval
   return ret
 
 def trans_to_percentile_json_list(

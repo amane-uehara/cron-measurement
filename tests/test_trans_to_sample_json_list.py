@@ -7,50 +7,107 @@ from mock_sensor_data import *
 
 class TestMain(unittest.TestCase):
 
-  def test_trans_to_sample_json_list(self):
-    sensor = mock_import_sensor()
-
-    config = mock_config()
-    config["sample_time_key"] = "dt"
-    config["sample_begin"]    = "20221229000000"
-    config["sample_end"]      = "20221229030000"
-    config["sample_interval"] = "3600"
-
-    json_list = [
-      mock_run_data_0(),
-      mock_run_data_1(),
-      mock_run_data_0(),
-      mock_run_data_1(),
-      mock_run_data_0(),
-      mock_run_data_1(),
-      mock_run_data_0(),
-      mock_run_data_1(),
-      mock_run_data_0(),
-      mock_run_data_1()
+  def setUp(self):
+    self.json_list = [
+      {"a":0, "dt": "20111111000000"},
+      {"a":1, "dt": "20111111005900"},
+      {"a":2, "dt": "20111111010000"},
+      {"a":3, "dt": "20111111010100"},
+      {"a":4, "dt": "20111111015900"},
+      {"a":5, "dt": "20111111020000"},
+      {"a":6, "dt": "20111111020100"},
+      {"a":7, "dt": "20111111025900"},
+      {"a":8, "dt": "20111111030000"},
+      {"a":9, "dt": "20111111030100"}
     ]
 
-    json_list[0]["dt"] = "20221229000000"
-    json_list[1]["dt"] = "20221229005900"
-    json_list[2]["dt"] = "20221229010000"
-    json_list[3]["dt"] = "20221229010100"
-    json_list[4]["dt"] = "20221229015900"
-    json_list[5]["dt"] = "20221229020000"
-    json_list[6]["dt"] = "20221229020100"
-    json_list[7]["dt"] = "20221229025900"
-    json_list[8]["dt"] = "20221229030000"
-    json_list[9]["dt"] = "20221229030100"
+  def test_trans_to_sample_json_list_0(self):
+    config = {}
+    config["sample_time_key"] = "dt"
+    config["sample_begin"]    = "20000101000000"
+    config["sample_end"]      = "20000101030000"
+    config["sample_interval"] = "3600"
+    actual = trans_to_sample_json_list(self.json_list, config)
 
-    actual = trans_to_sample_json_list(json_list, config)
+    expected = []
+
+    self.assertEqual(expected, actual)
+
+  def test_trans_to_sample_json_list_1(self):
+    config = {}
+    config["sample_time_key"] = "dt"
+    config["sample_begin"]    = "20111111000000"
+    config["sample_end"]      = "20111111030000"
+    config["sample_interval"] = "3600"
+    actual = trans_to_sample_json_list(self.json_list, config)
 
     expected = [
-      mock_run_data_0(),
-      mock_run_data_0(),
-      mock_run_data_1()
+      {"a":0, "dt": "20111111000000"},
+      {"a":2, "dt": "20111111010000"},
+      {"a":5, "dt": "20111111020000"}
     ]
 
-    expected[0]["dt"] = "20221229000000"
-    expected[1]["dt"] = "20221229010000"
-    expected[2]["dt"] = "20221229020000"
+    self.assertEqual(expected, actual)
+
+  def test_trans_to_sample_json_list_2(self):
+    config = {}
+    config["sample_time_key"] = "dt"
+    config["sample_begin"]    = "20111111000001"
+    config["sample_end"]      = "20111111030000"
+    config["sample_interval"] = "3600"
+    actual = trans_to_sample_json_list(self.json_list, config)
+
+    expected = [
+      {"a":1, "dt": "20111111005900"},
+      {"a":3, "dt": "20111111010100"},
+      {"a":6, "dt": "20111111020100"}
+    ]
+
+    self.assertEqual(expected, actual)
+
+  def test_trans_to_sample_json_list_3(self):
+    config = {}
+    config["sample_time_key"] = "dt"
+    config["sample_begin"]    = "20111111000000"
+    config["sample_end"]      = "20111111025959"
+    config["sample_interval"] = "3600"
+    actual = trans_to_sample_json_list(self.json_list, config)
+
+    expected = [
+      {"a":0, "dt": "20111111000000"},
+      {"a":2, "dt": "20111111010000"},
+      {"a":5, "dt": "20111111020000"}
+    ]
+
+    self.assertEqual(expected, actual)
+
+  def test_trans_to_sample_json_list_4(self):
+    config = {}
+    config["sample_time_key"] = "dt"
+    config["sample_begin"]    = "20111111000000"
+    config["sample_end"]      = "20111111030001"
+    config["sample_interval"] = "3600"
+    actual = trans_to_sample_json_list(self.json_list, config)
+
+    expected = [
+      {"a":0, "dt": "20111111000000"},
+      {"a":2, "dt": "20111111010000"},
+      {"a":5, "dt": "20111111020000"},
+      {"a":8, "dt": "20111111030000"}
+    ]
+
+    self.assertEqual(expected, actual)
+
+  def test_trans_to_sample_json_list_5(self):
+    config = {}
+    config["sample_time_key"] = "dt"
+    config["sample_begin"]    = "30111111000000"
+    config["sample_end"]      = "30111111000010"
+    config["sample_interval"] = "1"
+    actual = trans_to_sample_json_list(self.json_list, config)
+
+    expected = [
+    ]
 
     self.assertEqual(expected, actual)
 
