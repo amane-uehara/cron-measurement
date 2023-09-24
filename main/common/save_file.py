@@ -10,7 +10,7 @@ from uuid import getnode
 def save_file(text: str, config: Dict[str, Any]) -> None:
   filename = config["output_file"]
 
-  if config["dryrun"]:
+  if config["dryrun"] == "True":
     print(text, file=sys.stdout)
     return
 
