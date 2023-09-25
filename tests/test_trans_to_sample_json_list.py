@@ -113,12 +113,17 @@ class TestMain(unittest.TestCase):
   def test_trans_to_sample_json_list_6(self):
     config = {}
     config["sample_time_key"] = "dt"
-    config["sample_begin"]    = "30111111000000"
-    config["sample_end"]      = "30111111000010"
+    config["sample_begin"]    = "20111111000000"
+    config["sample_end"]      = "20111111020000"
     config["sample_interval"] = "1"
     actual = trans_to_sample_json_list(self.json_list, config)
 
     expected = [
+      {"a":0, "dt": "20111111000000"},
+      {"a":1, "dt": "20111111005900"},
+      {"a":2, "dt": "20111111010000"},
+      {"a":3, "dt": "20111111010100"},
+      {"a":4, "dt": "20111111015900"}
     ]
 
     self.assertEqual(expected, actual)

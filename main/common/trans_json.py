@@ -127,14 +127,21 @@ def trans_to_sample_json_list(
   sample_interval = timedelta(seconds=int(config["sample_interval"]))
 
   ret = []
-  json_list.sort(key=lambda x: x[time_key])
+  json_list.sort(key=lambda x: x[time_key], reverse=True)
 
-  for run in json_list:
+  while json_list:
+    run = json_list.pop()
     run_time = datetime.strptime(run[time_key], "%Y%m%d%H%M%S")
-    if sample_time <= run_time and run_time < sample_time + sample_interval:
-      ret.append(run.copy())
+
+    while sample_time + sample_interval <= run_time:
       sample_time += sample_interval
-    if sample_end <= sample_time: break
+
+    if sample_time >= sample_end:
+      break
+
+    if sample_time <= run_time:
+      ret.append(run)
+      sample_time += sample_interval
 
   return ret
 
