@@ -178,7 +178,7 @@ def trans_to_percentile_json_list(
 
     for i in range(div):
       if len(tmp) == 0:
-        ret[i] = {}
+        ret[i][key] = ""
       else:
         index = int((len(tmp)-1)*i/div)
         value = tmp[index]
