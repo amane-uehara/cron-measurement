@@ -12,6 +12,25 @@ def read_config_file(arg: Dict[str, str]) -> Dict[str, Any]:
     except FileNotFoundError as err:
       print("ERROR: config file: `" + arg["config_abspath"] + "` not found", file=sys.stderr)
       sys.exit(1)
+
+  import_list = []
+  if "import_list" in raw_config:
+    import_list = raw_config["import_list"]
+
+  for filename in import_list:
+    filename = filename.replace("${repository_path}", arg["repository_path"])
+    filename = filename.replace("${current_path}", arg["current_path"])
+
+    with open(filename) as f:
+      try:
+        import_config = json.load(f)
+      except FileNotFoundError as err:
+        print("ERROR: import config file: `" + filename + "` in import_list not found", file=sys.stderr)
+        sys.exit(1)
+
+    #raw_config = {**import_config, **raw_config}
+    raw_config = {**import_config, **raw_config}
+
   return raw_config
 
 def join_arg_config(
