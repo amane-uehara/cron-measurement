@@ -36,6 +36,18 @@ class TestMain(unittest.TestCase):
   def test_trans_to_sample_json_list_1(self):
     config = {}
     config["sample_time_key"] = "dt"
+    config["sample_begin"]    = "30000101000000"
+    config["sample_end"]      = "30000101030000"
+    config["sample_interval"] = "3600"
+    actual = trans_to_sample_json_list(self.json_list, config)
+
+    expected = []
+
+    self.assertEqual(expected, actual)
+
+  def test_trans_to_sample_json_list_2(self):
+    config = {}
+    config["sample_time_key"] = "dt"
     config["sample_begin"]    = "20111111000000"
     config["sample_end"]      = "20111111030000"
     config["sample_interval"] = "3600"
@@ -49,7 +61,7 @@ class TestMain(unittest.TestCase):
 
     self.assertEqual(expected, actual)
 
-  def test_trans_to_sample_json_list_2(self):
+  def test_trans_to_sample_json_list_3(self):
     config = {}
     config["sample_time_key"] = "dt"
     config["sample_begin"]    = "20111111000001"
@@ -65,7 +77,7 @@ class TestMain(unittest.TestCase):
 
     self.assertEqual(expected, actual)
 
-  def test_trans_to_sample_json_list_3(self):
+  def test_trans_to_sample_json_list_4(self):
     config = {}
     config["sample_time_key"] = "dt"
     config["sample_begin"]    = "20111111000000"
@@ -81,7 +93,7 @@ class TestMain(unittest.TestCase):
 
     self.assertEqual(expected, actual)
 
-  def test_trans_to_sample_json_list_4(self):
+  def test_trans_to_sample_json_list_5(self):
     config = {}
     config["sample_time_key"] = "dt"
     config["sample_begin"]    = "20111111000000"
@@ -98,7 +110,7 @@ class TestMain(unittest.TestCase):
 
     self.assertEqual(expected, actual)
 
-  def test_trans_to_sample_json_list_5(self):
+  def test_trans_to_sample_json_list_6(self):
     config = {}
     config["sample_time_key"] = "dt"
     config["sample_begin"]    = "30111111000000"
