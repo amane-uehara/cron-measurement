@@ -28,7 +28,7 @@
   "job_icloud_gps_drop": {
     "item"             : "icloud_gps",
     "sensor"           : "shell",
-    "program"          : "fetch_raw_json",
+    "program"          : "shell",
     "command_list"     : [
       "ls ${icloud_gps_drop_files} | wc -l",
       "rm -rf ${icloud_gps_drop_files}",
@@ -37,11 +37,12 @@
   },
 
   "job_icloud_gps_hourly_cron": {
-    "sensor"           : "shell",
-    "program"          : "fetch_raw_json",
-    "command_list"     : [
-      "${fork_main_py} 'job_icloud_gps_gps_hourly_json' --yyyymmddhhmmss ${yyyymmddhhmmss}",
-      "${fork_main_py} 'job_icloud_gps_gps_hourly_csv'  --yyyymmddhhmmss ${yyyymmddhhmmss}"
+    "sensor"           : "fork",
+    "program"          : "fork",
+    "fork_time"        : "${yyyymmddhhmmss}",
+    "job_list"         : [
+      "job_icloud_gps_gps_hourly_json",
+      "job_icloud_gps_gps_hourly_csv"
     ]
   },
   "job_icloud_gps_gps_hourly_json": {
@@ -59,11 +60,12 @@
   },
 
   "job_icloud_gps_daily_cron": {
-    "sensor"           : "shell",
-    "program"          : "fetch_raw_json",
-    "command_list"     : [
-      "${fork_main_py} 'job_icloud_gps_gps_daily_json' --yyyymmddhhmmss ${yyyymmddhhmmss}",
-      "${fork_main_py} 'job_icloud_gps_gps_daily_csv'  --yyyymmddhhmmss ${yyyymmddhhmmss}"
+    "sensor"           : "fork",
+    "program"          : "fork",
+    "fork_time"        : "${yyyymmddhhmmss}",
+    "job_list"         : [
+      "job_icloud_gps_gps_daily_json",
+      "job_icloud_gps_gps_daily_csv"
     ]
   },
   "job_icloud_gps_gps_daily_json": {

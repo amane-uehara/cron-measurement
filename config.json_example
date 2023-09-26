@@ -1,46 +1,43 @@
 {
   "constant": {
     "hostname"                       : "example_host",
-    "data_root"                      : "/path/to/save/root",
-    "data_raw_path"                  : "${data_root}/raw/${hostname}/${item}",
-    "data_hourly_path"               : "${data_root}/hourly/${hostname}/${item}",
-    "data_daily_path"                : "${data_root}/daily/${hostname}/${item}",
+    "data_root_path"                 : "/path/to/save/root",
+    "data_raw_path"                  : "${data_root_path}/raw/${hostname}",
+    "data_hourly_path"               : "${data_root_path}/hourly/${hostname}",
+    "data_daily_path"                : "${data_root_path}/daily/${hostname}",
 
-    "omron_env_sensor_raw_path"      : "${data_raw_path}",
-    "omron_env_sensor_hourly_path"   : "${data_hourly_path}",
-    "omron_env_sensor_daily_path"    : "${data_daily_path}",
+    "omron_env_sensor_raw_path"      : "${data_raw_path}/${item}",
+    "omron_env_sensor_hourly_path"   : "${data_hourly_path}/${item}",
+    "omron_env_sensor_daily_path"    : "${data_daily_path}/${item}",
     "omron_env_sensor_drop_files"    : "${omron_env_sensor_raw_path}/${yyyymmddhh-4}*.json",
     "omron_env_sensor_mac_addr"      : "11:22:33:44:55:FF",
     "omron_env_sensor_location"      : "example_location",
 
-    "inkbird_env_sensor_raw_path"    : "${data_raw_path}",
-    "inkbird_env_sensor_hourly_path" : "${data_hourly_path}",
-    "inkbird_env_sensor_daily_path"  : "${data_daily_path}",
+    "inkbird_env_sensor_raw_path"    : "${data_raw_path}/${item}",
+    "inkbird_env_sensor_hourly_path" : "${data_hourly_path}/${item}",
+    "inkbird_env_sensor_daily_path"  : "${data_daily_path}/${item}",
     "inkbird_env_sensor_drop_files"  : "${inkbird_env_sensor_raw_path}/${yyyymmddhh-4}*.json",
     "inkbird_env_sensor_mac_addr"    : "11:22:33:44:55:FF",
     "inkbird_env_sensor_location"    : "example_location",
 
-    "icloud_gps_raw_path"            : "${data_raw_path}",
-    "icloud_gps_hourly_path"         : "${data_hourly_path}",
-    "icloud_gps_daily_path"          : "${data_daily_path}",
+    "icloud_gps_raw_path"            : "${data_raw_path}/${item}",
+    "icloud_gps_hourly_path"         : "${data_hourly_path}/${item}",
+    "icloud_gps_daily_path"          : "${data_daily_path}/${item}",
     "icloud_gps_drop_files"          : "${icloud_gps_raw_path}/${yyyymmddhh-4}*.json",
     "icloud_gps_cookie_directory"    : "/path/to/icloud_login_session",
     "icloud_gps_apple_id"            : "mail.address@mail",
     "icloud_gps_password"            : "aaabbbcccddd",
     "icloud_gps_device_name"         : "device-name",
 
-    "system_resource_raw_path"       : "${data_raw_path}",
-    "system_resource_hourly_path"    : "${data_hourly_path}",
-    "system_resource_daily_path"     : "${data_daily_path}",
+    "system_resource_raw_path"       : "${data_raw_path}/${item}",
+    "system_resource_hourly_path"    : "${data_hourly_path}/${item}",
+    "system_resource_daily_path"     : "${data_daily_path}/${item}",
     "system_resource_drop_files"     : "${system_resource_raw_path}/${yyyymmddhh-4}*.json",
 
-    "rsync_src"                      : "${data_daily_path}/${hostname}",
+    "rsync_src"                      : "${data_daily_path}",
     "rsync_dst_1"                    : "server1:/path/to/save/${hostname}",
     "rsync_dst_2"                    : "server2:/path/to/save/${hostname}",
-    "rsync_dst_arr"                  : "${rsync_dst_1} ${rsync_dst_2}",
-
-    "opt_1_hour_ago"                 : "--yyyymmddhhmmss ${yyyymmddhh-1}0000",
-    "opt_1_day_ago"                  : "--yyyymmddhhmmss ${yyyymmdd-1}000000"
+    "rsync_dst_arr"                  : "${rsync_dst_1} ${rsync_dst_2}"
   },
 
   "import_list": [
@@ -51,33 +48,52 @@
     "${repository_path}/config/rsync.json"
   ],
 
-  "job_houly_cron": {
-    "item"         : "all",
-    "sensor"       : "shell",
-    "program"      : "fetch_raw_json",
+  "job_raw_cron": {
+    "sensor"       : "fork",
+    "program"      : "fork",
     "command_list" : [
-      "${fork_main_py} ${opt_1_hour_ago}' job_omron_env_sensor_hourly_cron'",
-      "${fork_main_py} ${opt_1_hour_ago}' job_omron_env_sensor_drop'",
-      "${fork_main_py} ${opt_1_hour_ago}' job_inkbird_env_sensor_hourly_cron'",
-      "${fork_main_py} ${opt_1_hour_ago}' job_inkbird_env_sensor_drop'",
-      "${fork_main_py} ${opt_1_hour_ago}' job_icloud_gps_hourly_cron'",
-      "${fork_main_py} ${opt_1_hour_ago}' job_icloud_gps_drop'",
-      "${fork_main_py} ${opt_1_hour_ago}' job_system_resource_hourly_cron'",
-      "${fork_main_py} ${opt_1_hour_ago}' job_system_resource_drop'"
+      "job_omron_env_sensor_raw_cron",
+      "job_inkbird_env_sensor_raw_cron",
+      "job_icloud_gps_raw_cron",
+      "job_system_resource_raw_cron"
+    ]
+  },
+
+  "job_hourly_cron": {
+    "sensor"       : "fork",
+    "program"      : "fork",
+    "fork_time"    : "${yyyymmddhh-1}0000",
+    "command_list" : [
+      "job_omron_env_sensor_hourly_cron",
+      "job_inkbird_env_sensor_hourly_cron",
+      "job_icloud_gps_hourly_cron",
+      "job_system_resource_hourly_cron"
+    ]
+  },
+
+  "job_drop_cron": {
+    "sensor"       : "fork",
+    "program"      : "fork",
+    "fork_time"    : "${yyyymmddhh-1}0000",
+    "command_list" : [
+      "job_omron_env_sensor_drop",
+      "job_inkbird_env_sensor_drop",
+      "job_icloud_gps_drop",
+      "job_system_resource_drop"
     ]
   },
 
   "job_daily_cron": {
-    "item"         : "all",
-    "sensor"       : "shell",
-    "program"      : "fetch_raw_json",
+    "sensor"       : "fork",
+    "program"      : "fork",
+    "fork_time"    : "${yyyymmdd-1}000000",
     "command_list" : [
-      "${fork_main_py} ${opt_1_day_ago} 'job_omron_env_sensor_daily_cron'",
-      "${fork_main_py} ${opt_1_day_ago} 'job_inkbird_env_sensor_daily_cron'",
-      "${fork_main_py} ${opt_1_day_ago} 'job_icloud_gps_daily_cron'",
-      "${fork_main_py} ${opt_1_day_ago} 'job_system_resource_daily_cron'",
+      "job_omron_env_sensor_daily_cron",
+      "job_inkbird_env_sensor_daily_cron",
+      "job_icloud_gps_daily_cron",
+      "job_system_resource_daily_cron",
 
-      "${fork_main_py} ${opt_1_day_ago} 'job_rsync'"
+      "job_rsync"
     ]
   }
 }

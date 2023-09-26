@@ -18,7 +18,7 @@
   "job_system_resource_drop": {
     "item"            : "system_resource",
     "sensor"          : "shell",
-    "program"         : "fetch_raw_json",
+    "program"         : "shell",
     "command_list"    : [
       "ls ${system_resource_drop_files} | wc -l",
       "rm -rf ${system_resource_drop_files}",
@@ -28,11 +28,12 @@
 
   "job_system_resource_hourly_cron": {
     "item"            : "system_resource",
-    "sensor"          : "shell",
-    "program"         : "fetch_raw_json",
-    "command_list"    : [
-      "${fork_main_py} 'job_system_resource_hourly_json' --yyyymmddhhmmss ${yyyymmddhhmmss}",
-      "${fork_main_py} 'job_system_resource_hourly_csv'  --yyyymmddhhmmss ${yyyymmddhhmmss}"
+    "sensor"          : "fork",
+    "program"         : "fork",
+    "fork_time"       : "${yyyymmddhhmmss}",
+    "job_list"        : [
+      "job_system_resource_hourly_json",
+      "job_system_resource_hourly_csv"
     ]
   },
   "job_system_resource_hourly_json": {
@@ -53,24 +54,26 @@
 
   "job_system_resource_daily_cron": {
     "item"            : "system_resource",
-    "sensor"          : "shell",
-    "program"         : "fetch_raw_json",
-    "command_list"    : [
-      "${fork_main_py} 'job_system_resource_daily_json' --yyyymmddhhmmss ${yyyymmddhhmmss}",
-      "${fork_main_py} 'job_system_resource_daily_calc' --yyyymmddhhmmss ${yyyymmddhhmmss}"
+    "sensor"          : "fork",
+    "program"         : "fork",
+    "fork_time"       : "${yyyymmddhhmmss}",
+    "job_list"        : [
+      "job_system_resource_daily_json",
+      "job_system_resource_daily_calc"
     ]
   },
   "job_system_resource_daily_calc": {
     "item"            : "system_resource",
-    "sensor"          : "shell",
-    "program"         : "fetch_raw_json",
-    "command_list"    : [
-      "${fork_main_py} 'job_system_resource_daily_csv'             --yyyymmddhhmmss ${yyyymmddhhmmss}",
-      "${fork_main_py} 'job_system_resource_daily_percentile_json' --yyyymmddhhmmss ${yyyymmddhhmmss}",
-      "${fork_main_py} 'job_system_resource_daily_percentile_csv'  --yyyymmddhhmmss ${yyyymmddhhmmss}",
-      "${fork_main_py} 'job_system_resource_daily_sample_csv_60'   --yyyymmddhhmmss ${yyyymmddhhmmss}",
-      "${fork_main_py} 'job_system_resource_daily_sample_csv_600'  --yyyymmddhhmmss ${yyyymmddhhmmss}",
-      "${fork_main_py} 'job_system_resource_daily_sample_csv_3600' --yyyymmddhhmmss ${yyyymmddhhmmss}"
+    "sensor"          : "fork",
+    "program"         : "fork",
+    "fork_time"       : "${yyyymmddhhmmss}",
+    "job_list"        : [
+      "job_system_resource_daily_csv",
+      "job_system_resource_daily_percentile_json",
+      "job_system_resource_daily_percentile_csv",
+      "job_system_resource_daily_sample_csv_60",
+      "job_system_resource_daily_sample_csv_600",
+      "job_system_resource_daily_sample_csv_3600"
     ]
   },
   "job_system_resource_daily_json": {
@@ -95,7 +98,7 @@
     "division_number" : 100,
     "run_key_list"    : ["yyyymmdd", "hostname", "mac_addr"],
     "input_file_list" : ["${system_resource_daily_path}/all_json/${yyyymmdd}.json.gz"],
-    "output_file"     : "${system_resource_daily_path}/percentile_json/${yyyymmdd}.csv.gz"
+    "output_file"     : "${system_resource_daily_path}/percentile_json/${yyyymmdd}.json.gz"
   },
   "job_system_resource_daily_percentile_csv": {
     "item"            : "system_resource",
@@ -103,7 +106,7 @@
     "program"         : "to_csv",
     "division_number" : 100,
     "run_key_list"    : ["percentile", "yyyymmdd", "hostname", "mac_addr"],
-    "input_file_list" : ["${system_resource_daily_path}/percentile_json/${yyyymmdd}.csv.gz"],
+    "input_file_list" : ["${system_resource_daily_path}/percentile_json/${yyyymmdd}.json.gz"],
     "output_file"     : "${system_resource_daily_path}/percentile_csv/${yyyymmdd}.csv.gz"
   },
   "job_system_resource_daily_sample_csv_60": {

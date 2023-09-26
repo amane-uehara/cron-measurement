@@ -9,7 +9,7 @@
 
   "job_rsync": {
     "sensor"       : "shell",
-    "program"      : "fetch_raw_json",
+    "program"      : "shell",
     "command_list" : [
       "for dst in ${rsync_dst_arr} ;do rsync -av ${rsync_src}/ ${dst}/ ;done"
     ]
