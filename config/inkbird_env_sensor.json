@@ -81,9 +81,9 @@
     "job_list"        : [
       "job_inkbird_env_sensor_daily_csv",
       "job_inkbird_env_sensor_daily_percentile_json",
-      "job_inkbird_env_sensor_daily_percentile_csv}",
-      "job_inkbird_env_sensor_daily_sample_csv_60}",
-      "job_inkbird_env_sensor_daily_sample_csv_600}",
+      "job_inkbird_env_sensor_daily_percentile_csv",
+      "job_inkbird_env_sensor_daily_sample_csv_60",
+      "job_inkbird_env_sensor_daily_sample_csv_600",
       "job_inkbird_env_sensor_daily_sample_csv_3600"
     ]
   },
