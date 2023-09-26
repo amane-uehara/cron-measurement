@@ -19,7 +19,10 @@ def main():
   selected_json_list: List[Dict[str, Any]]
   sample_json_list:   List[Dict[str, Any]]
 
-  if program == "fetch_raw_json":
+  if (program == "fork") or (program == "shell"):
+    data = sensor["fetch_json"](config)
+
+  elif program == "fetch_raw_json":
     data = sensor["fetch_json"](config)
     run = add_runtime_info(data, config)
     save_json_file(run, config)

@@ -2,15 +2,24 @@ import sys
 import subprocess
 
 def fetch_json(config):
-  if "command_list" not in config:
-    print("ERROR: command_list not found", file=sys.stderr)
+  fork_main_py = config["fork_main_py"]
+
+  if "job_list" not in config:
+    print("ERROR: job_list not found", file=sys.stderr)
     sys.exit()
 
-  command_list = config["command_list"]
-  print("INFO: command_list: " + str(command_list), file=sys.stderr)
+  job_list = config["job_list"]
+  print("INFO: job_list: " + str(job_list), file=sys.stderr)
+
+  opt_time = "--yyyymmddhhmmss "
+  if "fork_time" in config:
+    opt_time += config["fork_time"]
+  else:
+    opt_time += config["yyyymmddhhmmss"]
 
   print("INFO: shell begin", file=sys.stderr)
-  for command_str in command_list:
+  for job in job_list:
+    command_str = fork_main_py + " " + opt_time + " " + job
     print("$ " + command_str, file=sys.stderr)
     command = subprocess.run(command_str, shell=True, capture_output=True, text=True)
     print(command.stdout, end='', file=sys.stdout)
@@ -25,7 +34,9 @@ def key_list():
 
 if __name__ == "__main__":
   data = fetch_json({
-    "command_list":[
+    "fork_main_py": "python3 main/main.py",
+    "fork_time": "20000101000000",
+    "job_list":[
       "pwd",
       "ls -l",
       "echo 'today is ${yyyymmdd}'"
