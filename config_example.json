@@ -51,11 +51,11 @@
   "job_raw_cron": {
     "sensor"       : "fork",
     "program"      : "fork",
-    "command_list" : [
-      "job_omron_env_sensor_raw_cron",
-      "job_inkbird_env_sensor_raw_cron",
-      "job_icloud_gps_raw_cron",
-      "job_system_resource_raw_cron"
+    "job_list" : [
+      "job_omron_env_sensor_raw_json",
+      "job_inkbird_env_sensor_raw_json",
+      "job_icloud_gps_raw_json",
+      "job_system_resource_raw_json"
     ]
   },
 
@@ -63,7 +63,7 @@
     "sensor"       : "fork",
     "program"      : "fork",
     "fork_time"    : "${yyyymmddhh-1}0000",
-    "command_list" : [
+    "job_list" : [
       "job_omron_env_sensor_hourly_cron",
       "job_inkbird_env_sensor_hourly_cron",
       "job_icloud_gps_hourly_cron",
@@ -75,7 +75,7 @@
     "sensor"       : "fork",
     "program"      : "fork",
     "fork_time"    : "${yyyymmddhh-1}0000",
-    "command_list" : [
+    "job_list" : [
       "job_omron_env_sensor_drop",
       "job_inkbird_env_sensor_drop",
       "job_icloud_gps_drop",
@@ -87,7 +87,7 @@
     "sensor"       : "fork",
     "program"      : "fork",
     "fork_time"    : "${yyyymmdd-1}000000",
-    "command_list" : [
+    "job_list" : [
       "job_omron_env_sensor_daily_cron",
       "job_inkbird_env_sensor_daily_cron",
       "job_icloud_gps_daily_cron",

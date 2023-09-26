@@ -41,17 +41,17 @@
     "program"          : "fork",
     "fork_time"        : "${yyyymmddhhmmss}",
     "job_list"         : [
-      "job_icloud_gps_gps_hourly_json",
-      "job_icloud_gps_gps_hourly_csv"
+      "job_icloud_gps_hourly_json",
+      "job_icloud_gps_hourly_csv"
     ]
   },
-  "job_icloud_gps_gps_hourly_json": {
+  "job_icloud_gps_hourly_json": {
     "sensor"           : "icloud_gps",
     "program"          : "to_json_list",
     "input_file_list"  : ["${icloud_gps_raw_path}/${yyyymmddhh}*.json"],
     "output_file"      : "${icloud_gps_hourly_path}/json/${yyyymmddhh}.json.gz"
   },
-  "job_icloud_gps_gps_hourly_csv": {
+  "job_icloud_gps_hourly_csv": {
     "sensor"           : "icloud_gps",
     "program"          : "to_csv",
     "run_key_list"     : ["dt", "hostname", "mac_addr", "extra.device"],
@@ -64,17 +64,17 @@
     "program"          : "fork",
     "fork_time"        : "${yyyymmddhhmmss}",
     "job_list"         : [
-      "job_icloud_gps_gps_daily_json",
-      "job_icloud_gps_gps_daily_csv"
+      "job_icloud_gps_daily_json",
+      "job_icloud_gps_daily_csv"
     ]
   },
-  "job_icloud_gps_gps_daily_json": {
+  "job_icloud_gps_daily_json": {
     "sensor"           : "icloud_gps",
     "program"          : "to_json_list",
     "input_file_list"  : ["${icloud_gps_hourly_path}/json/${yyyymmdd}*.json.gz"],
     "output_file"      : "${icloud_gps_daily_path}/all_json/${yyyymmdd}.json.gz"
   },
-  "job_icloud_gps_gps_daily_csv": {
+  "job_icloud_gps_daily_csv": {
     "sensor"           : "icloud_gps",
     "program"          : "to_csv",
     "run_key_list"     : ["dt", "hostname", "mac_addr", "extra.device"],
