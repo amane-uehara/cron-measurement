@@ -6,7 +6,7 @@
     "omron_env_sensor_raw_path"    : "/path/to/raw/data/dir",
     "omron_env_sensor_hourly_path" : "/path/to/hourly/data/dir",
     "omron_env_sensor_daily_path"  : "/path/to/daily/data/dir",
-    "omron_env_sensor_drop_files"  : "${inkbird_raw_path}/${yyyymmddhh-4}*.json",
+    "omron_env_sensor_drop_files"  : "${omron_env_sensor_raw_path}/${yyyymmddhh-4}*.json",
 
     "omron_env_sensor_mac_addr"    : "11:22:33:44:55:FF",
     "omron_env_sensor_location"    : "somewhere"
