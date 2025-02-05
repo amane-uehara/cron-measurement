@@ -13,12 +13,22 @@
     "omron_env_sensor_mac_addr"      : "11:22:33:44:55:FF",
     "omron_env_sensor_location"      : "example_location",
 
+    "omron_env_sensor_v2_raw_path"    : "${data_ram_path}/sensor",
+    "omron_env_sensor_v2_hourly_path" : "${data_hourly_path}/${item}",
+    "omron_env_sensor_v2_daily_path"  : "${data_daily_path}/${item}",
+    "omron_env_sensor_v2_drop_files"  : "${omron_env_sensor_v2_raw_path}/${yyyymmddhh-4}*_omron-2jcie-bu.json",
+
     "inkbird_env_sensor_raw_path"    : "${data_raw_path}/${item}",
     "inkbird_env_sensor_hourly_path" : "${data_hourly_path}/${item}",
     "inkbird_env_sensor_daily_path"  : "${data_daily_path}/${item}",
     "inkbird_env_sensor_drop_files"  : "${inkbird_env_sensor_raw_path}/${yyyymmddhh-4}*.json",
     "inkbird_env_sensor_mac_addr"    : "11:22:33:44:55:FF",
     "inkbird_env_sensor_location"    : "example_location",
+
+    "inkbird_env_sensor_v2_raw_path"    : "${data_ram_path}/sensor",
+    "inkbird_env_sensor_v2_hourly_path" : "${data_hourly_path}/${item}",
+    "inkbird_env_sensor_v2_daily_path"  : "${data_daily_path}/${item}",
+    "inkbird_env_sensor_v2_drop_files"  : "${inkbird_env_sensor_v2_raw_path}/${yyyymmddhh-4}*_inkbird-ibs-th2.json",
 
     "icloud_gps_raw_path"            : "${data_raw_path}/${item}",
     "icloud_gps_hourly_path"         : "${data_hourly_path}/${item}",
@@ -42,7 +52,9 @@
 
   "import_list": [
     "${repository_path}/config/omron_env_sensor.json",
+    "${repository_path}/config/omron_env_sensor_v2.json",
     "${repository_path}/config/inkbird_env_sensor.json",
+    "${repository_path}/config/inkbird_env_sensor_v2.json",
     "${repository_path}/config/icloud_gps.json",
     "${repository_path}/config/system_resource.json",
     "${repository_path}/config/rsync.json"
@@ -65,7 +77,9 @@
     "fork_time"    : "${yyyymmddhh-1}0000",
     "job_list" : [
       "job_omron_env_sensor_hourly_cron",
+      "job_omron_env_sensor_v2_hourly_cron",
       "job_inkbird_env_sensor_hourly_cron",
+      "job_inkbird_env_sensor_v2_hourly_cron",
       "job_icloud_gps_hourly_cron",
       "job_system_resource_hourly_cron"
     ]
@@ -77,7 +91,9 @@
     "fork_time"    : "${yyyymmddhh-1}0000",
     "job_list" : [
       "job_omron_env_sensor_drop",
+      "job_omron_env_sensor_v2_drop",
       "job_inkbird_env_sensor_drop",
+      "job_inkbird_env_sensor_v2_drop",
       "job_icloud_gps_drop",
       "job_system_resource_drop"
     ]
@@ -89,7 +105,9 @@
     "fork_time"    : "${yyyymmdd-1}000000",
     "job_list" : [
       "job_omron_env_sensor_daily_cron",
+      "job_omron_env_sensor_v2_daily_cron",
       "job_inkbird_env_sensor_daily_cron",
+      "job_inkbird_env_sensor_v2_daily_cron",
       "job_icloud_gps_daily_cron",
       "job_system_resource_daily_cron",
 
