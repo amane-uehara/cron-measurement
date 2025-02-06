@@ -6,6 +6,11 @@
     "data_hourly_path"               : "${data_root_path}/hourly/${hostname}",
     "data_daily_path"                : "${data_root_path}/daily/${hostname}",
 
+    "fetch_http_sensor_raw_path"     : "${data_raw_path}/fetch_http_sensor",
+    "fetch_http_sensor_raw_ip"       : "0.0.0.0",
+    "fetch_http_sensor_raw_port"     : "5000",
+    "fetch_http_sensor_raw_timeout"  : "5",
+
     "omron_env_sensor_raw_path"      : "${data_raw_path}/${item}",
     "omron_env_sensor_hourly_path"   : "${data_hourly_path}/${item}",
     "omron_env_sensor_daily_path"    : "${data_daily_path}/${item}",
@@ -13,7 +18,7 @@
     "omron_env_sensor_mac_addr"      : "11:22:33:44:55:FF",
     "omron_env_sensor_location"      : "example_location",
 
-    "omron_env_sensor_v2_raw_path"    : "${data_ram_path}/sensor",
+    "omron_env_sensor_v2_raw_path"    : "${fetch_http_sensor_raw_path}",
     "omron_env_sensor_v2_hourly_path" : "${data_hourly_path}/${item}",
     "omron_env_sensor_v2_daily_path"  : "${data_daily_path}/${item}",
     "omron_env_sensor_v2_drop_files"  : "${omron_env_sensor_v2_raw_path}/${yyyymmddhh-4}*_omron-2jcie-bu.json",
@@ -25,7 +30,7 @@
     "inkbird_env_sensor_mac_addr"    : "11:22:33:44:55:FF",
     "inkbird_env_sensor_location"    : "example_location",
 
-    "inkbird_env_sensor_v2_raw_path"    : "${data_ram_path}/sensor",
+    "inkbird_env_sensor_v2_raw_path"    : "${fetch_http_sensor_raw_path}",
     "inkbird_env_sensor_v2_hourly_path" : "${data_hourly_path}/${item}",
     "inkbird_env_sensor_v2_daily_path"  : "${data_daily_path}/${item}",
     "inkbird_env_sensor_v2_drop_files"  : "${inkbird_env_sensor_v2_raw_path}/${yyyymmddhh-4}*_inkbird-ibs-th2.json",
@@ -51,6 +56,7 @@
   },
 
   "import_list": [
+    "${repository_path}/config/fetch_http_sensor.json",
     "${repository_path}/config/omron_env_sensor.json",
     "${repository_path}/config/omron_env_sensor_v2.json",
     "${repository_path}/config/inkbird_env_sensor.json",
@@ -64,6 +70,7 @@
     "sensor"       : "fork",
     "program"      : "fork",
     "job_list" : [
+      "job_fetch_http_sensor_raw_json",
       "job_omron_env_sensor_raw_json",
       "job_inkbird_env_sensor_raw_json",
       "job_icloud_gps_raw_json",
