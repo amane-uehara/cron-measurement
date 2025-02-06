@@ -7,7 +7,7 @@ def key_list():
   return [
     "unixtime",
     "dt_jst9",
-    "http_dongle_mac_addr",
+    "dt_mac_addr",
     "data.sensor_mac_addr",
     "data.sensor_type",
     "data.temperature",

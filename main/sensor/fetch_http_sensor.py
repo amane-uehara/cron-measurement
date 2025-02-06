@@ -10,7 +10,7 @@ def save_file(data):
   dt = data["dt_jst9"]
   sensor_type = data["sensor_type"]
   sensor_addr = data["sensor_mac_addr"]
-  dongle_addr = data["http_dongle_mac_addr"]
+  dongle_addr = data["dt_mac_addr"]
   filename = f"{dt}_{dongle_addr}_{sensor_addr}_{sensor_type}.json"
   filepath = os.path.join(_SAVE_PATH_, filename)
 
