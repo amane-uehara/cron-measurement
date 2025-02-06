@@ -10,7 +10,13 @@ def read_write(input_gz_file, output_gz_file, henkan):
 
   w = []
   for d in data:
+    if "data" not in d:
+      continue
     if d["data"] == {}:
+      continue
+    if "extra" not in d:
+      continue
+    if d["extra"] == {}:
       continue
     w.append(henkan(d))
 
