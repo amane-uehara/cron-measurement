@@ -6,6 +6,12 @@
     "data_hourly_path"               : "${data_root_path}/hourly/${hostname}",
     "data_daily_path"                : "${data_root_path}/daily/${hostname}",
 
+    "google_calendar_savefile"       : "${data_daily_path}/${item}/${yyyymmdd+1}.json.gz",
+    "google_calendar_token"          : "/path/to/token.json",
+    "google_calendar_credentials"    : "/path/to/credentials.json",
+    "google_calendar_start"          : "${yyyymmdd-400}000000",
+    "google_calendar_end"            : "${yyyymmdd+400}000000",
+
     "fetch_http_sensor_raw_path"     : "${data_raw_path}/fetch_http_sensor",
     "fetch_http_sensor_raw_ip"       : "0.0.0.0",
     "fetch_http_sensor_raw_port"     : "5000",
@@ -56,6 +62,7 @@
   },
 
   "import_list": [
+    "${repository_path}/config/google_calendar.json",
     "${repository_path}/config/fetch_http_sensor.json",
     "${repository_path}/config/omron_env_sensor.json",
     "${repository_path}/config/omron_env_sensor_v2.json",
@@ -111,6 +118,7 @@
     "program"      : "fork",
     "fork_time"    : "${yyyymmdd-1}000000",
     "job_list" : [
+      "job_google_calendar_raw_json",
       "job_omron_env_sensor_daily_cron",
       "job_omron_env_sensor_v2_daily_cron",
       "job_inkbird_env_sensor_daily_cron",
