@@ -34,9 +34,9 @@ def fetch_json(config):
       flow = InstalledAppFlow.from_client_secrets_file(credentials_json_path, SCOPES)
       creds = flow.run_console()
 
-    # 取得した認証情報を保存
-    with open(token_json_path, "w") as token:
-      token.write(creds.to_json())
+  # 取得した認証情報を保存
+  with open(token_json_path, "w") as token:
+    token.write(creds.to_json())
 
   tz = pytz.timezone("Asia/Tokyo")
   start_time = datetime.datetime.strptime(start_yyyymmddhhmmss, "%Y%m%d%H%M%S").replace(tzinfo=tz)
